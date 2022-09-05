@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { underscoreJoin } from '../utils';
 
 /**
  * these are the types of functions the peapod can use to control its environment
@@ -18,14 +19,17 @@ type ParameterBlockProps = {
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
+	// creating ids
+	let paramId = underscoreJoin('select', 'parameterBlock', props.parameter);
+
 	return (
 		<tr>
 			{/* Dropdown for number of phases, used to generate PhaseBlocks (ToBeDeveloped) */}
 			<td>
-				<label htmlFor={'select' + props.parameter}>Type:</label>
+				<label htmlFor={underscoreJoin(paramId, 2)}>Phase Type:</label>
 				<select
 					onChange={event => props.updateType(event.target.value as PhaseTypes)}
-					name={'select-' + props.parameter}
+					name={underscoreJoin(paramId, 2)}
 				>
 					{Object.entries(PhaseTypes).map(type => {
 						return <option value={type[0]}>{type[1]}</option>;
