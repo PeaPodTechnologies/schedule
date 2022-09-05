@@ -75,16 +75,20 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 			<table>
 				<thead></thead>
 				<tbody>
-					{Object.keys(schedule.parameters).map(parameter => (
+					{Object.keys(schedule.parameters).map((parameter, index) => (
+                        // creating visual representations of each parameter
 						<ParameterBlock
 							{...{
-								parameter,
+                                // since each parameter is unique, we don't have to worry about being overwritten
+								parameter: parameter,
+
+                                // a function to change the phase type of a given parameter
 								updateType: type =>
 									setSchedule(old => {
-										let newParameters = { ...old.parameters };
-										newParameters[parameter] = [];
-										return old;
-									})
+										let newParameters = old.parameters;
+										newParameters[parameter][index].type = type;
+										return { ...old, parameters: newParameters };
+									}),
 							}}
 						/>
 					))}
