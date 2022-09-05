@@ -12,6 +12,12 @@ const genericSchedulePhase: SchedulePhase = {
 	targets: []
 };
 
+enum ParameterTypes {
+	AIRTEMPERATURE = 'Air Temperature',
+	HUMIDITY = 'Humidity',
+	UV = 'Light / UV'
+	// other valid parameter types
+}
 
 type ScheduleBuilderProps = {};
 
@@ -98,6 +104,13 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 										newParameters[parameter][index].type = type;
 										return { ...old, parameters: newParameters };
 									}),
+                                // WIP: changing the parameter's name, ignore
+								// updateParameter: (oldParameter, newParameter) => {
+								// 	// setSchedule(old => {
+
+								// 	// });
+								// 	return undefined;
+								// }
 							}}
 						/>
 					))}

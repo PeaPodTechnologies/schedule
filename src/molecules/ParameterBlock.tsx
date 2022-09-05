@@ -16,6 +16,7 @@ type ParameterBlockProps = {
 	type?: PhaseTypes;
 	parameter: string;
 	updateType(type: PhaseTypes): void;
+    // updateParameter(oldParameter: string, newParameter: ParameterTypes): void;
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
@@ -24,7 +25,19 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 
 	return (
 		<tr>
-			{/* Dropdown for number of phases, used to generate PhaseBlocks (ToBeDeveloped) */}
+
+			{/* WIP: adding the capability to change this parameter. ignore
+                <td>
+				<label htmlFor={underscoreJoin(paramId, 1)}>Parameter:</label>
+				<select
+					onChange={event => props.updateParameter(props.parameter, event.target.value as ParameterTypes)}
+					name={underscoreJoin(paramId, 1)}
+				>
+					{Object.entries(ParameterTypes).map(type => {
+						return <option value={type[0]}>{type[1]}</option>;
+					})}
+				</select>
+			</td> */}
 			<td>
 				<label htmlFor={underscoreJoin(paramId, 2)}>Phase Type:</label>
 				<select
