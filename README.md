@@ -1,8 +1,22 @@
-# Getting Started with Create React App
+# Schedule Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A webapp form to create schedules for a PeaPod.
+
+## Layout
+
+The `ScheduleBuilder` manages a list of `ParameterBlock`s and has a button to convert each `ParameterBlock` into a proper PeaPod schedule.
+
+The `AddParameter` object's only purpose is to add another entry into the `ScheduleBuilder`'s `ParameterBlock` array.
+
+Each `ParameterBlock` knows its state and can modify its state. Modifying state includes
+
+- type
+- end
+- targets
 
 ## Available Scripts
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
 
