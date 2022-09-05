@@ -6,3 +6,11 @@
 export function createRandomId(limit: number = 65536) {
   return (Math.random() * limit).toFixed();
 }
+
+/**
+ * this function capitalizes the first letter in the string
+ * @param str the string to capitalize
+ */
+export function capitalCase(str: string) {
+    return str[0].toUpperCase() + str.substring(1)
+}
