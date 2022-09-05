@@ -14,3 +14,11 @@ export function createRandomId(limit: number = 65536) {
 export function capitalCase(str: string) {
 	return str[0].toUpperCase() + str.substring(1);
 }
+
+export function underscoreJoin(...args: any[]) {
+	return args
+		.map(arg => {
+			return arg.toString();
+		})
+		.join('_');
+}
