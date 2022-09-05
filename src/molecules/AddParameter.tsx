@@ -1,20 +1,25 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 type AddParameterProps = {
-	addParameter(parameter: string): void;
+	addParameter(): void;
 };
 
+/**
+ * this object's purpose is to add another entry into the ScheduleBuilder's
+ * ParameterBlock array.
+ * 
+ * this takes a function which will add a new ParameterBlock into the parent object.
+ * in this case, it's the ScheduleBuilder
+ */
 const AddParameter: FC<AddParameterProps> = props => {
-	const [name, setName] = useState('');
 	return (
 		<>
-			{/* ADD: Input field for parameter name, triggering `setName` */}
 			<button
 				onClick={() => {
-					props.addParameter(name);
+					props.addParameter();
 				}}
 			>
-				Add Parameter
+				Add a new parameter
 			</button>
 		</>
 	);
