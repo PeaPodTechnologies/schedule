@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import InputBlock from "./InputBlock";
+import ParametersBlock from "./ParametersBlock";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  return <div className="App">
+    {/* need an export to json function
+    this function will look through its children and create a schedule.json from them */}
+    <div className="container">
+        <InputBlock label="id"></InputBlock>
+        <InputBlock label="name"></InputBlock>
+        <InputBlock label="revision"></InputBlock>
+        <ParametersBlock/>
     </div>
-  );
+  </div>;
 }
 
 export default App;
