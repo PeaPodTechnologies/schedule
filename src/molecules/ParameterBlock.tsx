@@ -4,7 +4,7 @@ import { underscoreJoin } from '../utils';
 /**
  * these are the types of functions the peapod can use to control its environment
  */
-enum PhaseTypes {
+export enum PhaseTypes {
 	PIECEWISE = 'piecewise',
 	PERIODIC = 'periodic'
 }
