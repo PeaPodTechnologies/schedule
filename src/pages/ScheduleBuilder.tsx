@@ -2,9 +2,9 @@ import { FC, useState } from 'react';
 import './ScheduleBuilder.css';
 import InputBlock from '../molecules/InputBlock';
 import AddParameter from '../molecules/AddParameter';
-import ParameterBlock from '../molecules/ParameterBlock';
-
+import ParameterBlock, { PhaseTypes } from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
+import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
 
 const genericSchedulePhase: SchedulePhase = {
 	type: PhaseTypes.PIECEWISE,
