@@ -28,7 +28,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 					name={'select-' + props.parameter}
 				>
 					{Object.entries(PhaseTypes).map(type => {
-						return <option value={type[1]}>{type[0]}</option>;
+						return <option value={type[0]}>{type[1]}</option>;
 					})}
 				</select>
 			</td>
