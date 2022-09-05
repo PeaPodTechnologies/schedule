@@ -4,7 +4,7 @@
  * @returns a random number between 0 and the limit
  */
 export function createRandomId(limit: number = 65536) {
-  return (Math.random() * limit).toFixed();
+	return (Math.random() * limit).toFixed();
 }
 
 /**
@@ -12,5 +12,5 @@ export function createRandomId(limit: number = 65536) {
  * @param str the string to capitalize
  */
 export function capitalCase(str: string) {
-    return str[0].toUpperCase() + str.substring(1)
+	return str[0].toUpperCase() + str.substring(1);
 }

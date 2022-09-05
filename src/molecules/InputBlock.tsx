@@ -1,16 +1,15 @@
 import { FC } from 'react';
+import { capitalCase } from '../utils';
 
 interface InputBlockProps {
-  label: string
+	label: string;
 }
 
-const InputBlock : FC<InputBlockProps> = (props) => (
-  <div>
-    <label htmlFor={props.label}>
-      { props.label[0].toUpperCase() + props.label.substring(1) + ": " }
-    </label>
-    <input type="text" name={props.label} id={props.label} />
-  </div>
+const InputBlock: FC<InputBlockProps> = props => (
+	<div>
+		<label htmlFor={props.label}>{capitalCase(props.label) + ': '}</label>
+		<input type="text" name={props.label} id={props.label} />
+	</div>
 );
 
 export default InputBlock;
