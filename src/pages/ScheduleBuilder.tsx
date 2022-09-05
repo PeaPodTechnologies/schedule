@@ -6,7 +6,12 @@ import ParameterBlock from '../molecules/ParameterBlock';
 
 import { v4 as uuid } from 'uuid';
 
-import { PEAPODAPI_REVISION, EnvironmentSchedule } from '@peapodtech/types';
+const genericSchedulePhase: SchedulePhase = {
+	type: PhaseTypes.PIECEWISE,
+	end: 0,
+	targets: []
+};
+
 
 type ScheduleBuilderProps = {};
 
@@ -48,14 +53,23 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 			{/* NO input, uses latest */}
 			<InputBlock label="revision"></InputBlock>
 
+            {/* the purpose of this is to add a new entry into the parameterblock array */}
 			<AddParameter
-				addParameter={parameter =>
+				addParameter={() => {
+					let parameterEntry = 'new_entry';
 					setSchedule(old => {
-						let newParameters = { ...old.parameters };
-						newParameters[parameter] = [];
+						// getting all of the current parameters
+						let newParameters = old.parameters;
+
+						// generating a new id for the param so we don't overwrite any
+						// previous ones
+						newParameters[parameterEntry] = [genericSchedulePhase];
+
+						// logging
+						console.log(`added param '${parameterEntry}'`, newParameters);
 						return { ...old, parameters: newParameters };
-					})
-				}
+					});
+				}}
 			/>
 
 			<table>
