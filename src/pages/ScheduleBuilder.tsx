@@ -129,27 +129,54 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 			<table>
 				<thead></thead>
 				<tbody>
-					{Object.keys(schedule.parameters).map((parameter, index) => (
+					{Object.keys(schedule.parameters).map(parameter => (
                         // creating visual representations of each parameter
 						<ParameterBlock
-							{...{
-                                // since each parameter is unique, we don't have to worry about being overwritten
-								parameter: parameter,
+							parameter={parameter}
+							phases={schedule.parameters[parameter]}
+							updateParameter={(oldParameter, newParameter) => {
+								// retuning if we're setting something to itself
+								if (oldParameter === newParameter) return;
 
-                                // a function to change the phase type of a given parameter
-								updateType: type =>
+								// changing the name of the parameter
 									setSchedule(old => {
-										let newParameters = old.parameters;
-										newParameters[parameter][index].type = type;
-										return { ...old, parameters: newParameters };
-									}),
-                                // WIP: changing the parameter's name, ignore
-								// updateParameter: (oldParameter, newParameter) => {
-								// 	// setSchedule(old => {
+									console.log(`called updateParam with ${oldParameter}, ${newParameter}`);
 
-								// 	// });
-								// 	return undefined;
-								// }
+									// creating new parameters from the old parameters
+									let newParameters = { ...old.parameters };
+
+									// changing the name of current param
+									newParameters[newParameter] = newParameters[oldParameter];
+									delete newParameters[oldParameter];
+
+									// returning the new state
+										return { ...old, parameters: newParameters };
+								});
+							}}
+							updatePhase={(index, field, value) => {
+								setSchedule(old => {
+									console.log(`> ${parameter}[${index}][${field}] = ${value}`);
+
+									// creating new parameters from the old parameters
+									let newParameters = { ...old.parameters };
+
+									// updating the phase's `field` to value `value`
+									switch (field) {
+										// using a switch to make typescript happy
+										case 'end':
+											newParameters[parameter][index][field] = value;
+											break;
+										case 'type':
+											newParameters[parameter][index][field] = value;
+											break;
+										case 'targets':
+											newParameters[parameter][index][field] = value;
+											break;
+									}
+
+									// returning the new state
+									return { ...old, parameters: newParameters };
+								});
 							}}
 						/>
 					))}
