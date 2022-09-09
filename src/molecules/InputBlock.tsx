@@ -4,7 +4,7 @@ import { capitalCase } from '../utils';
 interface InputBlockProps {
 	label: string;
 	onBlur(value: any): void;
-	value?: string;
+	value?: any;
 	readonly?: boolean;
 }
 
