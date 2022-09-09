@@ -24,12 +24,9 @@ type ParameterBlockProps = {
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
-	// creating ids
-	let paramId = underscoreJoin('select', 'parameterBlock', props.parameter);
-
 	return (
 		<tr>
-                <td>
+			<td>
 				<InputBlock
 					label={props.parameter}
 					onBlur={name => {
