@@ -6,6 +6,9 @@ import ParameterBlock, { PhaseTypes } from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
 import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
 
+/**
+ * this is a dummy SchedulePhase object
+ */
 const genericSchedulePhase: SchedulePhase = {
 	type: PhaseTypes.PIECEWISE,
 	end: 0,
