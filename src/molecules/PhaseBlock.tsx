@@ -27,9 +27,9 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
     }
 
 	return <div>
-        <InputBlock label="type" onBlur={updateType}/>
+        <InputBlock label="type" onBlur={updateType} value={props.type} />
 
-        <InputBlock label="end" onBlur={updateEnd}/>
+        <InputBlock label="end" onBlur={updateEnd} value={props.end} />
     </div>;
 };
 
