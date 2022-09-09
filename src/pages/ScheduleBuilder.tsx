@@ -118,6 +118,14 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 				}}
 			/>
 
+			<button
+				onClick={() => {
+					console.log(schedule.parameters);
+				}}
+			>
+				View Params
+			</button>
+
 			<table>
 				<thead></thead>
 				<tbody>
