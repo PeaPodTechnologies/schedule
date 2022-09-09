@@ -97,7 +97,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 			></InputBlock>
 
 			{/* NO input, uses latest */}
-			<InputBlock label="revision"></InputBlock>
+			<InputBlock readonly={true} label="revision" onBlur={() => null}></InputBlock>
 
             {/* the purpose of this is to add a new entry into the parameterblock array */}
 			<AddParameter
