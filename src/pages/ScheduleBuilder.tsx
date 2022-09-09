@@ -102,13 +102,13 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
             {/* the purpose of this is to add a new entry into the parameterblock array */}
 			<AddParameter
 				addParameter={() => {
-					let parameterEntry = 'new_entry';
+					// generating a new id for each parameter until it is user defined
+					let parameterEntry = uuid();
 					setSchedule(old => {
 						// getting all of the current parameters
-						let newParameters = old.parameters;
+						let newParameters = { ...old.parameters };
 
-						// generating a new id for the param so we don't overwrite any
-						// previous ones
+						// inserting the new parameter object into the global state
 						newParameters[parameterEntry] = [genericSchedulePhase];
 
 						// logging
