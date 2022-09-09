@@ -25,7 +25,7 @@ type ParameterBlockProps = {
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
 	return (
-		<tr>
+		<tr key={props.parameter}>
 			<td>
 				<InputBlock
 					label={props.parameter}
