@@ -1,5 +1,7 @@
+import { SchedulePhase } from '@peapodtech/types';
 import { FC } from 'react';
 import InputBlock from './InputBlock';
+import PhaseBlock from './PhaseBlock';
 
 /**
  * these are the types of functions the peapod can use to control its environment
@@ -9,14 +11,16 @@ export enum PhaseTypes {
 	PERIODIC = 'periodic'
 }
 
+export type ValidFields = "end" | "type" | "targets";
+
 /**
  * these are the expected props that can be passed into the object
  */
 type ParameterBlockProps = {
-	type?: PhaseTypes;
+	phases: SchedulePhase[];
 	parameter: string;
-	updateType(type: PhaseTypes): void;
-    // updateParameter(oldParameter: string, newParameter: ParameterTypes): void;
+	updateParameter(oldParameter: string, newParameter: string): void;
+	updatePhase(index: number, field: ValidFields, value: any): void;
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
@@ -37,15 +41,20 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				/>
 			</td>
 			<td>
-				<label htmlFor={underscoreJoin(paramId, 2)}>Phase Type:</label>
-				<select
-					onChange={event => props.updateType(event.target.value as PhaseTypes)}
-					name={underscoreJoin(paramId, 2)}
-				>
-					{Object.entries(PhaseTypes).map(type => {
-						return <option value={type[0]}>{type[1]}</option>;
+				<ol start={0}>
+					{props.phases.map((phase, index) => {
+						return (
+							<PhaseBlock
+								type={phase.type}
+								end={phase.end}
+								targets={phase.targets}
+								onUpdate={(field: ValidFields, value: any) => {
+									props.updatePhase(index, field, value);
+								}}
+							/>
+						);
 					})}
-				</select>
+				</ol>
 			</td>
 		</tr>
 	);
