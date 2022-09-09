@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { underscoreJoin } from '../utils';
+import InputBlock from './InputBlock';
 
 /**
  * these are the types of functions the peapod can use to control its environment
@@ -25,19 +25,17 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 
 	return (
 		<tr>
-
-			{/* WIP: adding the capability to change this parameter. ignore
                 <td>
-				<label htmlFor={underscoreJoin(paramId, 1)}>Parameter:</label>
-				<select
-					onChange={event => props.updateParameter(props.parameter, event.target.value as ParameterTypes)}
-					name={underscoreJoin(paramId, 1)}
-				>
-					{Object.entries(ParameterTypes).map(type => {
-						return <option value={type[0]}>{type[1]}</option>;
-					})}
-				</select>
-			</td> */}
+				<InputBlock
+					label={props.parameter}
+					onBlur={name => {
+                        // testing if the new name is undefined or an empty string
+                        if (!!name) props.updateParameter(props.parameter, name);
+                        else console.log("not renaming to empty string")
+					}}
+                    value={props.parameter}
+				/>
+			</td>
 			<td>
 				<label htmlFor={underscoreJoin(paramId, 2)}>Phase Type:</label>
 				<select
