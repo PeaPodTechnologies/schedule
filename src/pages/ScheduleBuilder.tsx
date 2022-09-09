@@ -15,13 +15,6 @@ const genericSchedulePhase: SchedulePhase = {
 	targets: []
 };
 
-enum ParameterTypes {
-	AIRTEMPERATURE = 'Air Temperature',
-	HUMIDITY = 'Humidity',
-	UV = 'Light / UV'
-	// other valid parameter types
-}
-
 type ScheduleBuilderProps = {};
 
 /**
