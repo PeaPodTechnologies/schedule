@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import InputBlock from './InputBlock';
+import InputBlock from '../atoms/InputBlock';
 import { PhaseTypes } from './ParameterBlock';
 
 /**

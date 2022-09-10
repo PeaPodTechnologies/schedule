@@ -1,7 +1,7 @@
 import { SchedulePhase } from '@peapodtech/types';
 import { FC } from 'react';
 import { underscoreJoin } from '../utils';
-import InputBlock from './InputBlock';
+import InputBlock from '../atoms/InputBlock';
 import PhaseBlock from './PhaseBlock';
 
 /**

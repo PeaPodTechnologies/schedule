@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import './ScheduleBuilder.css';
-import InputBlock from '../molecules/InputBlock';
+import InputBlock from '../atoms/InputBlock';
 import AddParameter from '../molecules/AddParameter';
 import ParameterBlock, { PhaseTypes } from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';

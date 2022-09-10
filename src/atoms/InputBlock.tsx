@@ -8,6 +8,12 @@ interface InputBlockProps {
 	readonly?: boolean;
 }
 
+const ensureValue = (value: string, callback: Function) => {
+    if (value !== "") {
+        callback(value);
+    }
+}
+
 const sanitizeInput = (input: string) => {
 	// getting the last two chars of the input
 	let trailing = input.substring(input.length - 2);
@@ -30,7 +36,10 @@ const InputBlock: FC<InputBlockProps> = props => (
 			type="text"
 			name={props.label}
 			id={props.label}
-			onBlur={event => props.onBlur(event.target.value)}
+			onBlur={event => {
+                // trigger callback if there is input
+                ensureValue(event.target.value, props.onBlur)
+			}}
 			defaultValue={props.value}
 		/>
 	</div>
