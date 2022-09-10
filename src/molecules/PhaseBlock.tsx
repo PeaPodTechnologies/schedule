@@ -1,10 +1,11 @@
 import { FC } from 'react';
 import { underscoreJoin } from '../utils';
 import InputBlock from '../atoms/InputBlock';
-import { PhaseTypes, ValidFields } from './ParameterBlock';
 import TargetBlock from './TargetBlock';
 import DeleteButton from './DeleteButton';
 import CreateButton from './CreateButton';
+import { PhaseTypes } from '../atoms/types';
+import SelectBlock from '../atoms/SelectBlock';
 
 /**
  * these are the expected props that can be passed into the object
@@ -40,18 +41,17 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 	return (
 		<>
 			<div>
-				<InputBlock label="type" onBlur={updateType} value={props.type} />
+				<SelectBlock label="type" onChange={updateType} text="Phase Type" options={PhaseTypes} />
 				<InputBlock label="end" onBlur={updateEnd} value={props.end} />
 				<CreateButton
 					callback={() => {
-                        // need to add the right field based off of the phase's type
-                        // let time = 
 						props.create(
 							{
-                                value: 0,
-                                timestamp: 0
-                            },
-							"targets"
+								value: 0,
+								timestamp: 0,
+                                duration: 0
+							},
+							'targets'
 						);
 					}}
 					text="create new target"
