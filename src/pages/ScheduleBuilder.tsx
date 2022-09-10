@@ -4,16 +4,7 @@ import InputBlock from '../molecules/InputBlock';
 import AddParameter from '../molecules/AddParameter';
 import ParameterBlock, { PhaseTypes } from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
-import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
-
-/**
- * this is a dummy SchedulePhase object
- */
-const genericSchedulePhase: SchedulePhase = {
-	type: PhaseTypes.PIECEWISE,
-	end: 0,
-	targets: []
-};
+import { PEAPODAPI_REVISION, EnvironmentSchedule } from '@peapodtech/types';
 
 type ScheduleBuilderProps = {};
 
@@ -29,7 +20,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 		id: 'peapod-schedule-' + uuid(),
 		name: undefined,
 		revision: PEAPODAPI_REVISION,
-        // using a map to remember the order of entries
+		// using a map to remember the order of entries
 		parameters: new Map<string, {}>() as {}
 	});
 
@@ -103,7 +94,13 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 						let newParameters = { ...old.parameters };
 
 						// inserting the new parameter object into the global state
-						newParameters[parameterEntry] = [genericSchedulePhase];
+						newParameters[parameterEntry] = [
+							{
+								type: PhaseTypes.PIECEWISE,
+								end: 0,
+								targets: []
+							}
+						];
 
 						// logging
 						console.log(`added param '${parameterEntry}'`, newParameters);
@@ -140,7 +137,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 									let newParameters = { ...old.parameters };
 
 									// changing the name of current param
-							    	newParameters[newParameter] = newParameters[oldParameter];
+									newParameters[newParameter] = newParameters[oldParameter];
 									delete newParameters[oldParameter];
 
 									// returning the new state
