@@ -37,6 +37,11 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 					value={props.parameter}
 				/>
 			</td>
+			{
+				// conditional rendering
+				props.phases == undefined ? (
+					<></>
+				) : (
 			<td>
 				<ol start={1}>
 					{props.phases.map((phase, index) => {
@@ -55,6 +60,8 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 					})}
 				</ol>
 			</td>
+				)
+			}
 		</tr>
 	);
 };
