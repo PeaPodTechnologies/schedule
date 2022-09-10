@@ -22,21 +22,12 @@ export type ValidFields = 'end' | 'type' | 'targets';
 type ParameterBlockProps = {
 	phases: SchedulePhase[];
 	parameter: string;
-	// the callback to change the parameter's name
-	updateParameter(newParameter: string): void;
-	// passing a callback to update the phase itself
-	updatePhase(index: number, field: ValidFields, value: any): void;
-	// passing a callback to update the target itself
-	updateTarget(
-		phaseIndex: number,
-		targetIndex: number,
-		field: 'value' | 'timestamp' | 'duration',
-		value: number
-	): void;
-	// callback to delete a phase
-	deletePhase(index: number): void;
-	// callback to delete a target
-	deleteTarget(phaseIndex: number, targetIndex: number): void;
+	// generic delete function
+	delete(...keys: any[]): void;
+	// generic update function
+	update(value: any, ...keys: any[]): void;
+	// generic create function
+	create(payload: any, ...keys: any[]): void;
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
@@ -46,12 +37,23 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				<InputBlock
 					label="Parameter Name"
 					onBlur={name => {
-						// testing if the new name is undefined or an empty string
-						if (!!name) props.updateParameter(name);
-						else console.log('not renaming to empty string');
+						props.update('name', name);
 					}}
 					value={props.parameter}
 				/>
+				<CreateButton
+					callback={() => {
+						props.create(
+							{
+								type: PhaseTypes.PIECEWISE,
+								end: 0,
+								targets: []
+							}
+						);
+					}}
+					text="create a new phase"
+				/>
+				<DeleteButton callback={props.delete} />
 			</td>
 			{
 				// conditional rendering
@@ -68,17 +70,20 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 											type={phase.type as PhaseTypes}
 											end={phase.end}
 											targets={phase.targets}
-											onUpdate={(field: ValidFields, value: any) => {
-												props.updatePhase(index, field, value);
+											update={(value, ...keys) => {
+												props.update(value, index, ...keys);
 											}}
-											updateTarget={(targetIndex, field, value) => {
-												props.updateTarget(index, targetIndex, field, value);
+											delete={(...keys) => {
+												if (keys.length > 0) {
+													// if there are keys, we are deleting a target
+													props.delete(index, ...keys);
+												} else {
+													// if there are no keys, we are deleting a phase
+													props.delete(index);
+												}
 											}}
-											delete={() => {
-												props.deletePhase(index);
-											}}
-											deleteTarget={targetIndex => {
-												props.deleteTarget(index, targetIndex);
+											create={(payload, ...keys) => {
+												props.create(payload, index, ...keys);
 											}}
 										/>
 									</li>

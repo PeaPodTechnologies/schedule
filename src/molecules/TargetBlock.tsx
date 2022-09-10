@@ -11,10 +11,10 @@ interface TargetBlockProps {
 	timestamp?: number;
 	duration?: number;
 	type: PhaseTypes;
-	// a generic function which we will expand on within the component
-	onUpdate(field: 'duration' | 'timestamp' | 'value', value: number): void;
-	// callback to delete the target from the object
-	delete(): void;
+	// generic update function
+	update(value: any, ...keys: any[]): void;
+	// generic delete function
+	delete(...keys: any[]): void;
 }
 
 const TargetBlock: FC<TargetBlockProps> = props => {
@@ -35,12 +35,12 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 
 	// wrapper to value the type of the target
 	const updateValue = (value: number) => {
-		return props.onUpdate('value', value);
+		return props.update(value, 'value');
 	};
 
 	// wrapper to update the time (duration/timestamp) of the phase
 	const updateTime = (time: number) => {
-		return props.onUpdate(label, time);
+		return props.update(time, label);
 	};
 
 	// rendering
@@ -60,9 +60,7 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 					updateTime(value);
 				}}
 			/>
-			<div>
-				<button onClick={props.delete}>Delete this target</button>
-			</div>
+			<DeleteButton callback={props.delete} text="delete this target" />
 		</div>
 	);
 };

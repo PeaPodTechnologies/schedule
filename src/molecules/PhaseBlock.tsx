@@ -17,25 +17,23 @@ interface PhaseBlockProps {
 		timestamp?: number;
 		duration?: number;
 	}[];
-	// a generic function which we will expand on within the component
-	onUpdate(field: ValidFields, value: any): void;
-	// passing in a callback for the target to update itself
-	updateTarget(targetIndex: number, field: any, value: number): void;
-	// callback to delete the phase from the object
-	delete(): void;
-	// callback to delete a target from the phase
-	deleteTarget(targetIndex: number): void;
+	// generic delete function
+	delete(...keys: any[]): void;
+	// generic update function
+	update(value: any, ...keys: any[]): void;
+	// generic create function
+	create(payload: any, ...keys: any[]): void;
 }
 
 const PhaseBlock: FC<PhaseBlockProps> = props => {
 	// wrapper to update the type of the phase
 	const updateType = (value: PhaseTypes) => {
-		return props.onUpdate('type', value);
+		return props.update(value, 'type');
 	};
 
 	// wrapper to update the end of the phase
 	const updateEnd = (value: number) => {
-		return props.onUpdate('end', value);
+		return props.update(value, 'end');
 	};
 
 	// rendering
@@ -44,6 +42,20 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 			<div>
 				<InputBlock label="type" onBlur={updateType} value={props.type} />
 				<InputBlock label="end" onBlur={updateEnd} value={props.end} />
+				<CreateButton
+					callback={() => {
+                        // need to add the right field based off of the phase's type
+                        // let time = 
+						props.create(
+							{
+                                value: 0,
+                                timestamp: 0
+                            },
+							"targets"
+						);
+					}}
+					text="create new target"
+				/>
 			</div>
 			{props.targets == undefined ? (
 				<></>
@@ -58,22 +70,20 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 										duration={target.duration}
 										type={props.type}
 										value={target.value}
-										onUpdate={(field, value) => {
-											props.updateTarget(index, field, value);
+										update={(value, field) => {
+											props.update(value, 'targets', index, field);
 										}}
 										delete={() => {
-											props.deleteTarget(index);
+											props.delete('targets', index);
 										}}
 									/>
 								</li>
 							);
 						})}
 					</ol>
-					<div>
-						<button onClick={props.delete}>Delete this phase</button>
-					</div>
 				</>
 			)}
+			<DeleteButton callback={props.delete} text="delete this phase" />
 		</>
 	);
 };
