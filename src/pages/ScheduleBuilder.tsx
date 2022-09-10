@@ -143,8 +143,8 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 
 									// changing the name of current param
 									newParameters = Object.fromEntries(
-                                        // the goal of this is to update the object's key **in place**
-                                        // this prevents the parameters moving around on screen
+										// the goal of this is to update the object's key **in place**
+										// this prevents the parameters moving around on screen
 										Object.entries(newParameters).map(([key, value]) => {
 											return key === parameter ? [newParameter, value] : [key, value];
 										})
@@ -176,6 +176,61 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 									}
 
 									// returning the new state
+									return { ...old, parameters: newParameters };
+								});
+							}}
+							updateTarget={(phaseIndex, targetIndex, field, value) => {
+								console.log(`> ${parameter}[${phaseIndex}][${targetIndex}][${field}] = ${value}`);
+
+								setSchedule(old => {
+									// creating new parameters from the old parameters
+									let newParameters = { ...old.parameters };
+
+									// getting a pointer to the target
+									let base = newParameters[parameter][phaseIndex].targets[targetIndex];
+
+									// updating the target's `field` to value `value`
+									switch (field) {
+										// using a switch to make typescript happy
+										case 'timestamp':
+											// need to type cast
+											(base as { value: number; timestamp: number }).timestamp = value;
+											break;
+										case 'duration':
+											(base as { value: number; duration: number }).duration = value;
+											break;
+										case 'value':
+											newParameters[parameter][phaseIndex].targets[targetIndex].value = value;
+											break;
+									}
+
+									// returning the new state
+									return { ...old, parameters: newParameters };
+								});
+							}}
+							deletePhase={phaseIndex => {
+								console.log(`-phase ${parameter}[${phaseIndex}]`);
+
+								setSchedule(old => {
+									// creating new parameters from the old parameters
+									let newParameters = { ...old.parameters };
+
+									// removing the phase from the schedule
+									delete newParameters[parameter][phaseIndex];
+
+									return { ...old, parameters: newParameters };
+								});
+							}}
+							deleteTarget={(phaseIndex, targetIndex) => {
+								console.log(`-target ${parameter}[${phaseIndex}][${targetIndex}]`);
+
+								setSchedule(old => {
+									// creating new parameters from the old parameters
+									let newParameters = { ...old.parameters };
+
+									// removing the phase from the schedule
+									delete newParameters[parameter][phaseIndex].targets[targetIndex];
+
 									return { ...old, parameters: newParameters };
 								});
 							}}
