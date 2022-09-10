@@ -11,8 +11,8 @@ export function createRandomId(limit: number = 65536) {
  * this function capitalizes the first letter in the string
  * @param str the string to capitalize
  */
-export function capitalCase(str: string) {
-	return str[0].toUpperCase() + str.substring(1);
+export function toCapitalCase(str: string) {
+	return str[0].toUpperCase() + str.substring(1).toLowerCase();
 }
 
 export function underscoreJoin(...args: any[]) {

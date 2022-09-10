@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { capitalCase } from '../utils';
+import { toCapitalCase } from '../utils';
 
 interface InputBlockProps {
 	label: string;
@@ -25,7 +25,7 @@ const sanitizeInput = (input: string) => {
 	if (trailing.at(1) != ' ') input += ' ';
 
 	// returning the output
-	return capitalCase(input);
+	return toCapitalCase(input);
 };
 
 const InputBlock: FC<InputBlockProps> = props => (
