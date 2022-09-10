@@ -16,8 +16,8 @@ const InputBlock: FC<InputBlockProps> = props => (
 			type="text"
 			name={props.label}
 			id={props.label}
-			onChange={event => props.onBlur(event.target.value)}
-			value={props.value}
+			onBlur={event => props.onBlur(event.target.value)}
+			defaultValue={props.value}
 		/>
 	</div>
 );
