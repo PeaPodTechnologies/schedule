@@ -9,16 +9,18 @@ import TargetBlock from './TargetBlock';
  */
 interface PhaseBlockProps {
 	type: PhaseTypes;
-    end: number;
-    targets?: {
-        value: number;
-        timestamp?: number;
+	end: number;
+	targets?: {
+		value: number;
+		timestamp?: number;
 		duration?: number;
 	}[];
-    // a generic function which we will expand on within the component
+	// a generic function which we will expand on within the component
 	onUpdate(field: ValidFields, value: any): void;
 	// passing in a callback for the target to update itself
 	updateTarget(targetIndex: number, field: any, value: number): void;
+	// callback to delete the phase from the object
+	delete(): void;
 	// callback to delete a target from the phase
 	deleteTarget(targetIndex: number): void;
 }
@@ -30,7 +32,7 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 	};
 
 	// wrapper to update the end of the phase
-    const updateEnd = (value: number) => {
+	const updateEnd = (value: number) => {
 		return props.onUpdate('end', value);
 	};
 
@@ -38,8 +40,8 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 	return (
 		<>
 			<div>
-        <InputBlock label="type" onBlur={updateType} value={props.type} />
-        <InputBlock label="end" onBlur={updateEnd} value={props.end} />
+				<InputBlock label="type" onBlur={updateType} value={props.type} />
+				<InputBlock label="end" onBlur={updateEnd} value={props.end} />
 			</div>
 			{props.targets == undefined ? (
 				<></>
@@ -65,6 +67,9 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 							);
 						})}
 					</ol>
+					<div>
+						<button onClick={props.delete}>Delete this phase</button>
+					</div>
 				</>
 			)}
 		</>
