@@ -49,7 +49,8 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 						return (
 									<li key={underscoreJoin('phase', index)}>
 								<PhaseBlock
-									type={phase.type}
+											// passing in props
+											type={phase.type as PhaseTypes}
 									end={phase.end}
 									targets={phase.targets}
 									onUpdate={(field: ValidFields, value: any) => {
