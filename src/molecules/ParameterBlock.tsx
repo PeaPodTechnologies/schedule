@@ -19,7 +19,7 @@ export type ValidFields = 'end' | 'type' | 'targets';
 type ParameterBlockProps = {
 	phases: SchedulePhase[];
 	parameter: string;
-	updateParameter(oldParameter: string, newParameter: string): void;
+	updateParameter(newParameter: string): void;
 	updatePhase(index: number, field: ValidFields, value: any): void;
 };
 
@@ -31,7 +31,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 					label={props.parameter}
 					onBlur={name => {
 						// testing if the new name is undefined or an empty string
-						if (!!name) props.updateParameter(props.parameter, name);
+						if (!!name) props.updateParameter(name);
 						else console.log('not renaming to empty string');
 					}}
 					value={props.parameter}

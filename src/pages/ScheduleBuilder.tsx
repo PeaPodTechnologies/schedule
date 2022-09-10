@@ -21,7 +21,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 		name: undefined,
 		revision: PEAPODAPI_REVISION,
 		// using a map to remember the order of entries
-		parameters: new Map<string, {}>() as {}
+		parameters: {}
 	});
 
 	// WIP: converting the parameterblocks into a proper EnvironmentSchedule, ignore
@@ -120,25 +120,30 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 			<table>
 				<thead></thead>
 				<tbody>
-					{Object.keys(schedule.parameters).map(parameter => (
+					{Object.entries(schedule.parameters).map(([parameter, phases]) => (
 						// creating visual representations of each parameter
 						<ParameterBlock
 							parameter={parameter}
-							phases={schedule.parameters[parameter]}
-							updateParameter={(oldParameter, newParameter) => {
+							phases={phases}
+							updateParameter={newParameter => {
 								// retuning if we're setting something to itself
-								if (oldParameter === newParameter) return;
+								if (parameter === newParameter) return;
 
 								// changing the name of the parameter
 								setSchedule(old => {
-									console.log(`called updateParam with ${oldParameter}, ${newParameter}`);
+									console.log(`called updateParam with ${parameter}, ${newParameter}`);
 
 									// creating new parameters from the old parameters
 									let newParameters = { ...old.parameters };
 
 									// changing the name of current param
-									newParameters[newParameter] = newParameters[oldParameter];
-									delete newParameters[oldParameter];
+									newParameters = Object.fromEntries(
+                                        // the goal of this is to update the object's key **in place**
+                                        // this prevents the parameters moving around on screen
+										Object.entries(newParameters).map(([key, value]) => {
+											return key === parameter ? [newParameter, value] : [key, value];
+										})
+									);
 
 									// returning the new state
 									return { ...old, parameters: newParameters };
