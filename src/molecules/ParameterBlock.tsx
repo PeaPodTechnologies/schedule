@@ -38,9 +38,10 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				/>
 			</td>
 			<td>
-				<ol start={0}>
+				<ol start={1}>
 					{props.phases.map((phase, index) => {
 						return (
+							<li key={index}>
 							<PhaseBlock
 								type={phase.type}
 								end={phase.end}
@@ -49,6 +50,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 									props.updatePhase(index, field, value);
 								}}
 							/>
+							</li>
 						);
 					})}
 				</ol>
