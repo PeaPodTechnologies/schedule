@@ -28,7 +28,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 		<tr key={props.parameter}>
 			<td>
 				<InputBlock
-					label={props.parameter}
+					label="Parameter Name"
 					onBlur={name => {
 						// testing if the new name is undefined or an empty string
 						if (!!name) props.updateParameter(name);
