@@ -13,8 +13,8 @@ interface PhaseBlockProps {
     targets?: {
         value: number;
         timestamp?: number;
-        duration?: number
-    }[]
+		duration?: number;
+	}[];
     // a generic function which we will expand on within the component
 	onUpdate(field: ValidFields, value: any): void;
 	// passing in a callback for the target to update itself
@@ -24,13 +24,15 @@ interface PhaseBlockProps {
 }
 
 const PhaseBlock: FC<PhaseBlockProps> = props => {
-    const updateType = (value: string) => {
-        return props.onUpdate("type", value);
-    }
+	// wrapper to update the type of the phase
+	const updateType = (value: PhaseTypes) => {
+		return props.onUpdate('type', value);
+	};
 
+	// wrapper to update the end of the phase
     const updateEnd = (value: number) => {
-        return props.onUpdate("end", value);
-    }
+		return props.onUpdate('end', value);
+	};
 
 	// rendering
 	return (
