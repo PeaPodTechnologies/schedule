@@ -3,8 +3,8 @@ import { underscoreJoin } from '../utils';
 import InputBlock from '../atoms/InputBlock';
 import { PhaseTypes, ValidFields } from './ParameterBlock';
 import TargetBlock from './TargetBlock';
-import DeleteButton from '../atoms/DeleteButton';
-import CreateButton from '../atoms/CreateButton';
+import DeleteButton from './DeleteButton';
+import CreateButton from './CreateButton';
 
 /**
  * these are the expected props that can be passed into the object

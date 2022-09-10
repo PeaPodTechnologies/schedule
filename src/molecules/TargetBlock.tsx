@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import DeleteButton from '../atoms/DeleteButton';
+import DeleteButton from './DeleteButton';
 import InputBlock from '../atoms/InputBlock';
 import { PhaseTypes } from './ParameterBlock';
 
