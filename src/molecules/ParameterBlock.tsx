@@ -3,6 +3,8 @@ import { FC } from 'react';
 import { underscoreJoin } from '../utils';
 import InputBlock from '../atoms/InputBlock';
 import PhaseBlock from './PhaseBlock';
+import DeleteButton from '../atoms/DeleteButton';
+import CreateButton from '../atoms/CreateButton';
 
 /**
  * these are the types of functions the peapod can use to control its environment
