@@ -1,5 +1,6 @@
 import { SchedulePhase } from '@peapodtech/types';
 import { FC } from 'react';
+import { underscoreJoin } from '../utils';
 import InputBlock from './InputBlock';
 import PhaseBlock from './PhaseBlock';
 
@@ -46,7 +47,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				<ol start={1}>
 					{props.phases.map((phase, index) => {
 						return (
-							<li key={index}>
+									<li key={underscoreJoin('phase', index)}>
 								<PhaseBlock
 									type={phase.type}
 									end={phase.end}
