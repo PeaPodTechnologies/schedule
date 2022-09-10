@@ -18,12 +18,12 @@ interface PhaseBlockProps {
 		timestamp?: number;
 		duration?: number;
 	}[];
-	// generic delete function
-	delete(...keys: any[]): void;
-	// generic update function
-	update(value: any, ...keys: any[]): void;
 	// generic create function
 	create(payload: any, ...keys: any[]): void;
+	// generic update function
+	update(payload: any, ...keys: any[]): void;
+	// generic delete function
+	delete(...keys: any[]): void;
 }
 
 const PhaseBlock: FC<PhaseBlockProps> = props => {

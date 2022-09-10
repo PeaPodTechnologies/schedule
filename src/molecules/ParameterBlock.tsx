@@ -15,12 +15,12 @@ export type ValidFields = 'end' | 'type' | 'targets';
 type ParameterBlockProps = {
 	phases: SchedulePhase[];
 	parameter: string;
-	// generic delete function
-	delete(...keys: any[]): void;
-	// generic update function
-	update(value: any, ...keys: any[]): void;
 	// generic create function
 	create(payload: any, ...keys: any[]): void;
+	// generic update function
+	update(payload: any, ...keys: any[]): void;
+	// generic delete function
+	delete(...keys: any[]): void;
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {

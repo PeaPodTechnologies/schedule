@@ -12,7 +12,7 @@ interface TargetBlockProps {
 	duration?: number;
 	type: PhaseTypes;
 	// generic update function
-	update(value: any, ...keys: any[]): void;
+	update(payload: any, ...keys: any[]): void;
 	// generic delete function
 	delete(...keys: any[]): void;
 }
