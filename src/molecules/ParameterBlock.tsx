@@ -5,6 +5,7 @@ import InputBlock from '../atoms/InputBlock';
 import PhaseBlock from './PhaseBlock';
 import DeleteButton from './DeleteButton';
 import CreateButton from './CreateButton';
+import { PhaseTypes } from '../atoms/types';
 
 export type ValidFields = 'end' | 'type' | 'targets';
 

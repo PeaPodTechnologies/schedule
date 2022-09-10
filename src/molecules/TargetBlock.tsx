@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import DeleteButton from './DeleteButton';
 import InputBlock from '../atoms/InputBlock';
-import { PhaseTypes } from './ParameterBlock';
+import { mapPhaseToTarget, PhaseTargets, PhaseTypes } from '../atoms/types';
 
 /**
  * these are the expected props that can be passed into the object
@@ -18,20 +18,8 @@ interface TargetBlockProps {
 }
 
 const TargetBlock: FC<TargetBlockProps> = props => {
-	let label: 'duration' | 'timestamp';
-
 	// setting the proper label based on type
-	switch (props.type) {
-		case PhaseTypes.PIECEWISE:
-			label = 'timestamp';
-			break;
-		case PhaseTypes.PERIODIC:
-			label = 'duration';
-			break;
-		default:
-			label = 'timestamp';
-			break;
-	}
+	let label: PhaseTargets = mapPhaseToTarget(props.type);
 
 	// wrapper to value the type of the target
 	const updateValue = (value: number) => {
