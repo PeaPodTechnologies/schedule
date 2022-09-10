@@ -98,7 +98,12 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
 							{
 								type: PhaseTypes.PIECEWISE,
 								end: 0,
-								targets: []
+								targets: [
+									{
+										value: 0,
+										timestamp: 0
+									}
+								]
 							}
 						];
 
