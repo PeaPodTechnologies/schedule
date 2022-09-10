@@ -11,7 +11,7 @@ export enum PhaseTypes {
 	PERIODIC = 'periodic'
 }
 
-export type ValidFields = "end" | "type" | "targets";
+export type ValidFields = 'end' | 'type' | 'targets';
 
 /**
  * these are the expected props that can be passed into the object
@@ -30,11 +30,11 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				<InputBlock
 					label={props.parameter}
 					onBlur={name => {
-                        // testing if the new name is undefined or an empty string
-                        if (!!name) props.updateParameter(props.parameter, name);
-                        else console.log("not renaming to empty string")
+						// testing if the new name is undefined or an empty string
+						if (!!name) props.updateParameter(props.parameter, name);
+						else console.log('not renaming to empty string');
 					}}
-                    value={props.parameter}
+					value={props.parameter}
 				/>
 			</td>
 			<td>
@@ -42,14 +42,14 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 					{props.phases.map((phase, index) => {
 						return (
 							<li key={index}>
-							<PhaseBlock
-								type={phase.type}
-								end={phase.end}
-								targets={phase.targets}
-								onUpdate={(field: ValidFields, value: any) => {
-									props.updatePhase(index, field, value);
-								}}
-							/>
+								<PhaseBlock
+									type={phase.type}
+									end={phase.end}
+									targets={phase.targets}
+									onUpdate={(field: ValidFields, value: any) => {
+										props.updatePhase(index, field, value);
+									}}
+								/>
 							</li>
 						);
 					})}
