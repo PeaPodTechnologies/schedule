@@ -120,23 +120,12 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 
 			<CallbackButton text="Download the schedule" callback={downloadSchedule} />
 
-			<div>
-				<button
-					onClick={() => {
-						console.log(schedule.parameters);
-					}}
-				>
-					View Params
-				</button>
-				{/* <button
-					onClick={() => {
-						// showing verbose output of the program if toggled
-						debug = !(debug ?? false);
-					}}
-				>
-					{debug ?? false ? 'Enable Debug' : 'Disable Debug'}
-				</button> */}
-			</div>
+			<CallbackButton
+				text="View Params"
+				callback={() => {
+					console.log(schedule.parameters);
+				}}
+			/>
 
 			<table>
 				<thead></thead>
@@ -144,7 +133,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 					{Object.entries(schedule.parameters).map(([parameter, phases]) => (
 						// creating visual representations of each parameter
 						<ParameterBlock
-                            key={parameter}
+							key={parameter}
 							parameter={parameter}
 							phases={phases}
 							update={(payload, ...keys) => {
