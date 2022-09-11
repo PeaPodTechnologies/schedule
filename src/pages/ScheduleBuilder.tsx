@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { PhaseTypes } from '../atoms/types';
 import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
 import CreateButton from '../molecules/CreateButton';
+import CallbackButton from '../atoms/CallbackButton';
 
 type ScheduleBuilderProps = {};
 
@@ -116,6 +117,8 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 					});
 				}}
 			/>
+
+			<CallbackButton text="Download the schedule" callback={downloadSchedule} />
 
 			<div>
 				<button
