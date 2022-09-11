@@ -5,7 +5,7 @@ import AddParameter from '../molecules/AddParameter';
 import ParameterBlock from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
 import { PhaseTypes } from '../atoms/types';
-import { PEAPODAPI_REVISION, EnvironmentSchedule } from '@peapodtech/types';
+import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
 
 type ScheduleBuilderProps = {};
 
