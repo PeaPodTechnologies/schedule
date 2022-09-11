@@ -116,6 +116,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 				}}
 			/>
 
+			<div>
 			<button
 				onClick={() => {
 					console.log(schedule.parameters);
@@ -123,6 +124,15 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 			>
 				View Params
 			</button>
+				{/* <button
+					onClick={() => {
+						// showing verbose output of the program if toggled
+						debug = !(debug ?? false);
+					}}
+				>
+					{debug ?? false ? 'Enable Debug' : 'Disable Debug'}
+				</button> */}
+			</div>
 
 			<table>
 				<thead></thead>
