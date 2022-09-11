@@ -117,13 +117,13 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 			/>
 
 			<div>
-			<button
-				onClick={() => {
-					console.log(schedule.parameters);
-				}}
-			>
-				View Params
-			</button>
+				<button
+					onClick={() => {
+						console.log(schedule.parameters);
+					}}
+				>
+					View Params
+				</button>
 				{/* <button
 					onClick={() => {
 						// showing verbose output of the program if toggled
@@ -142,18 +142,64 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 						<ParameterBlock
 							parameter={parameter}
 							phases={phases}
-							update={(value, ...keys) => {
-								if (value === "name") {
-                                    console.log(`> rename ${parameter} to ${keys[0]}`)
-                                } else {
-                                    console.log(
-                                        `update ${parameter}${keys
-                                            .map(key => {
-                                                return `[${key}]`;
-                                            })
-                                            .join('')} = ${value}`
-                                    );
-                                }
+							update={(payload, ...keys) => {
+								if (payload === 'name') {
+									console.log(`rename ${parameter} to ${keys[0]}`);
+								} else {
+									console.log(
+										`update ${parameter}${keys
+											.map(key => {
+												return `[${key}]`;
+											})
+											.join('')} = ${payload}`
+									);
+								}
+
+								setSchedule(old => {
+									// getting all of the current parameters
+									let newParameters = { ...old.parameters };
+
+									/// removing the object from the global state
+
+									if (payload === 'name') {
+										// getting the name from the keys
+										let name = keys[0];
+
+										// detecting name collisions
+										if (Object.keys(newParameters).includes(name)) {
+											alert(
+												`Cannot rename ${parameter} to ${name} because ${name} already exists.`
+											);
+											return old;
+										}
+
+										// changing a parameter's name
+										newParameters = Object.fromEntries(
+											// the goal of this is to update the object's key **in place**
+											// this prevents the parameters moving around on screen
+											Object.entries(newParameters).map(([key, value]) => {
+												return key === parameter ? [name, value] : [key, value];
+											})
+										);
+									} else {
+										// navigating to the right context
+										let context: any = newParameters[parameter];
+
+										// getting the index of the thing we want to remove
+										let key: number = keys.pop();
+
+										// walking the object
+										keys.forEach(key => {
+											context = context[key];
+										});
+
+										// updating the value of the object
+										context[key] = payload;
+									}
+
+									// returning the new global state
+									return { ...old, parameters: newParameters };
+								});
 							}}
 							create={(payload, ...keys) => {
 								console.log(
@@ -163,6 +209,25 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 										})
 										.join('')}[+1] = ${JSON.stringify(payload)}`
 								);
+								setSchedule(old => {
+									// getting all of the current parameters
+									let newParameters = { ...old.parameters };
+
+									/// inserting the new parameter object into the global state
+
+									// navigating to the right context
+									let context: any = newParameters[parameter];
+
+									keys.forEach(key => {
+										context = context[key];
+									});
+
+									// adding the payload
+									(context as SchedulePhase[]).push(payload);
+
+									// returning the new global state
+									return { ...old, parameters: newParameters };
+								});
 							}}
 							delete={(...keys) => {
 								console.log(
@@ -172,6 +237,35 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 										})
 										.join('')}`
 								);
+
+								setSchedule(old => {
+									// getting all of the current parameters
+									let newParameters = { ...old.parameters };
+
+									/// removing the object from the global state
+
+									if (keys.length === 0) {
+										// we are removing a parameter
+										delete newParameters[parameter];
+									} else {
+										// navigating to the right context
+										let context: any = newParameters[parameter];
+
+										// getting the index of the thing we want to remove
+										let index: number = keys.pop();
+
+										// walking the object
+										keys.forEach(key => {
+											context = context[key];
+										});
+
+										// removing the target object
+										(context as SchedulePhase[]).splice(index, 1);
+									}
+
+									// returning the new global state
+									return { ...old, parameters: newParameters };
+								});
 							}}
 						/>
 					))}
