@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { underscoreJoin } from '../utils';
+import { ensureNumber, underscoreJoin } from '../utils';
 import InputBlock from '../atoms/InputBlock';
 import TargetBlock from './TargetBlock';
 import DeleteButton from './DeleteButton';
@@ -71,7 +71,12 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 										type={props.type}
 										value={target.value}
 										update={(value, field) => {
-											props.update(value, 'targets', index, field);
+											/// performing input validation
+											if (ensureNumber(value)) {
+												props.update(parseFloat(value), 'targets', index, field);
+											} else {
+												alert(`${value} is not a valid number for ${field}`);
+											}
 										}}
 										delete={() => {
 											props.delete('targets', index);

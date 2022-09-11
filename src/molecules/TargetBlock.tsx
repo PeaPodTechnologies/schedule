@@ -2,6 +2,7 @@ import { FC } from 'react';
 import DeleteButton from './DeleteButton';
 import InputBlock from '../atoms/InputBlock';
 import { mapPhaseToTarget, PhaseTargets, PhaseTypes } from '../atoms/types';
+import { ensureNumber } from '../utils';
 
 /**
  * these are the expected props that can be passed into the object
@@ -38,14 +39,24 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 				label="value"
 				value={props.value}
 				onBlur={value => {
-					updateValue(value);
+					/// performing input validation
+					if (ensureNumber(value)) {
+						updateValue(parseFloat(value));
+					} else {
+						alert(`${value} is not a valid number for value`);
+					}
 				}}
 			/>
 			<InputBlock
 				label={label}
 				value={props[label] ?? ''}
 				onBlur={value => {
-					updateTime(value);
+					/// performing input validation
+					if (ensureNumber(value)) {
+						updateTime(parseFloat(value));
+					} else {
+						alert(`${value} is not a valid number for ${label}`);
+					}
 				}}
 			/>
 			<DeleteButton callback={props.delete} text="delete this target" />
