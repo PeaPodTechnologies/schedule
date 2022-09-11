@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Button } from '@mui/material';
 
 interface CallbackButtonProps {
 	callback(): void;
@@ -7,13 +8,13 @@ interface CallbackButtonProps {
 
 const CallbackButton: FC<CallbackButtonProps> = props => (
 	<div>
-		<button
+		<Button variant="outlined"
 			onClick={() => {
 				props.callback();
 			}}
 		>
 			{props.text}
-		</button>
+		</Button>
 	</div>
 );
 
