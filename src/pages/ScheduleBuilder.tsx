@@ -108,7 +108,9 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 						];
 
 						// logging
-						console.log(`added param '${parameterEntry}'`, newParameters);
+						console.log(
+							`create ${parameterEntry}: ${JSON.stringify(newParameters[parameterEntry])}`
+						);
 						return { ...old, parameters: newParameters };
 					});
 				}}
