@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { toCapitalCase } from '../utils';
+import { toCapitalCase, toLabel } from '../utils';
 
 interface SelectBlockProps {
 	label: string;
@@ -10,7 +10,7 @@ interface SelectBlockProps {
 
 const SelectBlock: FC<SelectBlockProps> = props => (
 	<div>
-		<label htmlFor={props.label}>{props.text}</label>
+		<label htmlFor={props.label}>{toLabel(props.text)}</label>
 		<select
 			onChange={event => props.onChange(event.target.value)}
 			name={props.label}
