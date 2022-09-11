@@ -15,7 +15,7 @@ type ScheduleBuilderProps = {};
  *
  * it will have an export function that will turn all of the parameter blocks into a proper schedule format
  */
-const ScheduleBuilder: FC<ScheduleBuilderProps> = props => {
+const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 	const [schedule, setSchedule] = useState<EnvironmentSchedule>({
 		// the initial state of the object
 		id: 'peapod-schedule-' + uuid(),
