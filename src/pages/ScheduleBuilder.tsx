@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 import './ScheduleBuilder.css';
 import InputBlock from '../atoms/InputBlock';
-import AddParameter from '../molecules/AddParameter';
 import ParameterBlock from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
 import { PhaseTypes } from '../atoms/types';
 import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
+import CreateButton from '../molecules/CreateButton';
 
 type ScheduleBuilderProps = {};
 
@@ -85,8 +85,9 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 			<InputBlock readonly={true} label="revision" onBlur={() => null}></InputBlock>
 
 			{/* the purpose of this is to add a new entry into the parameterblock array */}
-			<AddParameter
-				addParameter={() => {
+			<CreateButton
+				text="create a parameter"
+				callback={() => {
 					// generating a new id for each parameter until it is user defined
 					let parameterEntry = uuid();
 					setSchedule(old => {
