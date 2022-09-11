@@ -57,7 +57,7 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 					text="create new target"
 				/>
 			</div>
-			{props.targets == undefined ? (
+			{props.targets === undefined ? (
 				<></>
 			) : (
 				<>

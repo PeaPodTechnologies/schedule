@@ -50,7 +50,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 			</td>
 			{
 				// conditional rendering
-				props.phases == undefined ? (
+				props.phases === undefined ? (
 					<></>
 				) : (
 					<td>
