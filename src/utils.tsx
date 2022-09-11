@@ -7,7 +7,7 @@ export function toCapitalCase(str: string) {
 }
 
 /**
- * 
+ *
  * @param input some text
  * @returns "some text" -> "some text: "
  */

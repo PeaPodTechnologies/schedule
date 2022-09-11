@@ -36,13 +36,11 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 				/>
 				<CreateButton
 					callback={() => {
-						props.create(
-							{
-								type: PhaseTypes.PIECEWISE,
-								end: 0,
-								targets: []
-							}
-						);
+						props.create({
+							type: PhaseTypes.PIECEWISE,
+							end: 0,
+							targets: []
+						});
 					}}
 					text="create a new phase"
 				/>

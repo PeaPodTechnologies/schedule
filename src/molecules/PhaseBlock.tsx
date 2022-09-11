@@ -49,7 +49,7 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 							{
 								value: 0,
 								timestamp: 0,
-                                duration: 0
+								duration: 0
 							},
 							'targets'
 						);

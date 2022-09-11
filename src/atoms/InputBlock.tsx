@@ -9,10 +9,10 @@ interface InputBlockProps {
 }
 
 const ensureValue = (value: string, callback: Function) => {
-    if (value !== "") {
-        callback(value);
-    }
-}
+	if (value !== '') {
+		callback(value);
+	}
+};
 
 const InputBlock: FC<InputBlockProps> = props => (
 	<div>
@@ -23,8 +23,8 @@ const InputBlock: FC<InputBlockProps> = props => (
 			name={props.label}
 			id={props.label}
 			onBlur={event => {
-                // trigger callback if there is input
-                ensureValue(event.target.value, props.onBlur)
+				// trigger callback if there is input
+				ensureValue(event.target.value, props.onBlur);
 			}}
 			defaultValue={props.value}
 		/>
