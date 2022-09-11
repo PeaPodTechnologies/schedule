@@ -25,6 +25,10 @@ export function toLabel(input: string) {
 	return toCapitalCase(input);
 }
 
+/**
+ * this function joins the elements in the given array with underscores
+ * @param args things to join
+ */
 export function underscoreJoin(...args: any[]) {
 	return args
 		.map(arg => {
