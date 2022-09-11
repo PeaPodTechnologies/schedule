@@ -144,6 +144,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 					{Object.entries(schedule.parameters).map(([parameter, phases]) => (
 						// creating visual representations of each parameter
 						<ParameterBlock
+                            key={parameter}
 							parameter={parameter}
 							phases={phases}
 							update={(payload, ...keys) => {

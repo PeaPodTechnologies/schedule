@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { v4 as uuid} from 'uuid';
 import { toCapitalCase, toLabel } from '../utils';
 
 interface SelectBlockProps {
@@ -13,7 +14,7 @@ const SelectBlock: FC<SelectBlockProps> = props => (
 		<label htmlFor={props.label}>{toLabel(props.text)}</label>
 		<select onChange={event => props.onChange(event.target.value)} name={props.label}>
 			{Object.entries(props.options).map(([key, value]) => {
-				return <option value={value}>{toCapitalCase(key)}</option>;
+				return <option key={uuid()} value={value}>{toCapitalCase(key)}</option>;
 			})}
 		</select>
 	</div>
