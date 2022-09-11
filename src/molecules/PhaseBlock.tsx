@@ -42,7 +42,14 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 		<>
 			<div>
 				<SelectBlock label="type" onChange={updateType} text="Phase Type" options={PhaseTypes} />
-				<InputBlock label="end" onBlur={updateEnd} value={props.end} />
+				<InputBlock label="end" onBlur={value => {
+                    /// performing input validation
+					if (ensureNumber(value)) {
+						updateEnd(parseFloat(value));
+					} else {
+						alert(`${value} is not a valid number for value`);
+					}
+                }} value={props.end} />
 				<CreateButton
 					callback={() => {
 						props.create(
@@ -57,37 +64,6 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 					text="create new target"
 				/>
 			</div>
-			{props.targets === undefined ? (
-				<></>
-			) : (
-				<>
-					<ol start={1}>
-						{props.targets.map((target, index) => {
-							return (
-								<li key={underscoreJoin('target', index)}>
-									<TargetBlock
-										timestamp={target.timestamp}
-										duration={target.duration}
-										type={props.type}
-										value={target.value}
-										update={(value, field) => {
-											/// performing input validation
-											if (ensureNumber(value)) {
-												props.update(parseFloat(value), 'targets', index, field);
-											} else {
-												alert(`${value} is not a valid number for ${field}`);
-											}
-										}}
-										delete={() => {
-											props.delete('targets', index);
-										}}
-									/>
-								</li>
-							);
-						})}
-					</ol>
-				</>
-			)}
 			<DeleteButton callback={props.delete} text="delete this phase" />
 		</>
 	);

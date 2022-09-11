@@ -20,7 +20,7 @@ interface TargetBlockProps {
 
 const TargetBlock: FC<TargetBlockProps> = props => {
 	// setting the proper label based on type
-	let label: PhaseTargets = mapPhaseToTarget(props.type);
+	let label: PhaseTargets = mapPhaseToTarget(props.type).toLowerCase() as PhaseTargets;
 
 	// wrapper to value the type of the target
 	const updateValue = (value: number) => {
