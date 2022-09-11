@@ -21,7 +21,6 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 		id: 'peapod-schedule-' + uuid(),
 		name: undefined,
 		revision: PEAPODAPI_REVISION,
-		// using a map to remember the order of entries
 		parameters: {}
 	});
 
