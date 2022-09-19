@@ -1,3 +1,16 @@
 .ScheduleBuilder {
-  text-align: center;
+	text-align: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	align-items: center;
+	position: relative;
+}
+
+.container > * {
+	width: auto;
+	left: 0%;
 }

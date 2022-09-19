@@ -1,0 +1,14 @@
+.crudBlock {
+	display: flex;
+	flex: content;
+	flex-direction: row;
+	position: relative;
+	align-items: center;
+	align-content: center;
+	width: max-content;
+}
+
+.crudBlock > div {
+	display: block;
+	position: relative;
+}
