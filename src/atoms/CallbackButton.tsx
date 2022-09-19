@@ -8,7 +8,8 @@ interface CallbackButtonProps {
 
 const CallbackButton: FC<CallbackButtonProps> = props => (
 	<div>
-		<Button variant="outlined"
+		<Button
+			variant="outlined"
 			onClick={() => {
 				props.callback();
 			}}
