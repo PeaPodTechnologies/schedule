@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { toLabel } from '../utils';
+import './InputBlock.css';
 
-interface InputBlockProps {
+export interface InputBlockProps {
 	label: string;
 	onBlur(value: any): void;
 	value?: any;
 	readonly?: boolean;
+	size?: number;
 }
 
 const ensureValue = (value: string, callback: Function) => {
@@ -15,10 +17,11 @@ const ensureValue = (value: string, callback: Function) => {
 };
 
 const InputBlock: FC<InputBlockProps> = props => (
-	<div>
+	<div className="inputBlock">
 		<label htmlFor={props.label}>{toLabel(props.label)}</label>
 		<input
-			readOnly={props.readonly}
+			size={props.size ?? 20}
+			readOnly={props.readonly ?? false}
 			type="text"
 			name={props.label}
 			id={props.label}
