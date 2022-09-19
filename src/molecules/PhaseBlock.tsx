@@ -1,11 +1,7 @@
 import { FC } from 'react';
-import { ensureNumber, underscoreJoin } from '../utils';
-import InputBlock from '../atoms/InputBlock';
-import TargetBlock from './TargetBlock';
-import DeleteButton from './DeleteButton';
-import CreateButton from './CreateButton';
-import { PhaseTypes } from '../atoms/types';
-import SelectBlock from '../atoms/SelectBlock';
+import { ensureNumber } from '../utils';
+import { PhaseTypes } from '../types';
+import CrudBlock from './CrudBlock';
 
 /**
  * these are the expected props that can be passed into the object
@@ -39,33 +35,43 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 
 	// rendering
 	return (
-		<>
-			<div>
-				<SelectBlock label="type" onChange={updateType} text="Phase Type" options={PhaseTypes} />
-				<InputBlock label="end" onBlur={value => {
-                    /// performing input validation
-					if (ensureNumber(value)) {
-						updateEnd(parseFloat(value));
-					} else {
-						alert(`${value} is not a valid number for value`);
-					}
-                }} value={props.end} />
-				<CreateButton
-					callback={() => {
-						props.create(
-							{
-								value: 0,
-								timestamp: 0,
-								duration: 0
-							},
-							'targets'
-						);
-					}}
-					text="create new target"
-				/>
-			</div>
-			<DeleteButton callback={props.delete} text="delete this phase" />
-		</>
+		<CrudBlock
+			selects={[
+				{
+					label: 'phase type',
+					onChange: updateType,
+					options: PhaseTypes,
+					selected: props.type
+				}
+			]}
+			inputs={[
+				{
+					label: 'end',
+					onBlur: value => {
+						/// performing input validation
+						if (ensureNumber(value)) {
+							updateEnd(parseFloat(value));
+						} else {
+							alert(`${value} is not a valid number for value`);
+						}
+					},
+					value: props.end,
+					size: 10
+				}
+			]}
+			createLabel={'new target'}
+			create={() => {
+				props.create(
+					{
+						value: 0,
+						timestamp: 0,
+						duration: 0
+					},
+					'targets'
+				);
+			}}
+			delete={props.delete}
+		/>
 	);
 };
 
