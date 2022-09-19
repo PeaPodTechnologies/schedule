@@ -8,7 +8,7 @@ interface CreateButtonProps {
 }
 
 const CreateButton: FC<CreateButtonProps> = props => (
-	<CallbackButton text={toCapitalCase(props.text ?? 'create')} callback={props.callback} />
+	<CallbackButton text={toCapitalCase(props.text ?? '+')} callback={props.callback} />
 );
 
 export default CreateButton;

@@ -8,7 +8,7 @@ interface DeleteButtonProps {
 }
 
 const DeleteButton: FC<DeleteButtonProps> = props => (
-	<CallbackButton text={toCapitalCase(props.text ?? 'delete')} callback={props.callback} />
+	<CallbackButton text={toCapitalCase(props.text ?? 'x')} callback={props.callback} />
 );
 
 export default DeleteButton;
