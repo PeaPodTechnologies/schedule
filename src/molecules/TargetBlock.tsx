@@ -46,7 +46,10 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 							alert(`${value} is not a valid number for value`);
 						}
 					},
-					size: 10
+					size: 10,
+					type: 'number',
+					adornmentUnit: 'unit',
+					step: 0.1
 				},
 				{
 					label: label,
@@ -59,7 +62,10 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 							alert(`${value} is not a valid number for ${label}`);
 						}
 					},
-					size: 10
+					size: 10,
+					type: 'number',
+					adornmentUnit: 'ms',
+					step: 1000
 				}
 			]}
 			delete={props.delete}

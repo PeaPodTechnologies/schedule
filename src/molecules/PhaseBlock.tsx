@@ -56,7 +56,10 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 						}
 					},
 					value: props.end,
-					size: 10
+					size: 10,
+                    type: "number",
+                    adornmentUnit: "ms",
+                    step: 1000
 				}
 			]}
 			createLabel={'new target'}
