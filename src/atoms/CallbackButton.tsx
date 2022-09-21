@@ -4,6 +4,8 @@ import { Button } from '@mui/material';
 interface CallbackButtonProps {
 	callback(): void;
 	text?: string;
+    startIcon?: JSX.Element;
+    endIcon?: JSX.Element;
 }
 
 const CallbackButton: FC<CallbackButtonProps> = props => (
@@ -13,6 +15,8 @@ const CallbackButton: FC<CallbackButtonProps> = props => (
 			onClick={() => {
 				props.callback();
 			}}
+            startIcon={props.startIcon}
+            endIcon={props.endIcon}
 		>
 			{props.text}
 		</Button>
