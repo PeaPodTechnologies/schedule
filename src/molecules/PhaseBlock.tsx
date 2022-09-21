@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ensureNumber } from '../utils';
+import { ensureAll, ensureDefined, ensureDifferent, ensureNumber } from '../utils';
 import { PhaseTypes } from '../types';
 import CrudBlock from './CrudBlock';
 
@@ -25,12 +25,18 @@ interface PhaseBlockProps {
 const PhaseBlock: FC<PhaseBlockProps> = props => {
 	// wrapper to update the type of the phase
 	const updateType = (value: PhaseTypes) => {
-		return props.update(value, 'type');
+		/// performing input validation
+		if (ensureDefined(value) && ensureDifferent(value, props.type)) {
+			return props.update(value, 'type');
+		}
 	};
 
 	// wrapper to update the end of the phase
-	const updateEnd = (value: number) => {
-		return props.update(value, 'end');
+	const updateEnd = (value: string) => {
+		/// performing input validation
+		if (ensureAll(value, props.end)) {
+			return props.update(parseFloat(value), 'end');
+		}
 	};
 
 	// rendering
@@ -47,19 +53,12 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 			inputs={[
 				{
 					label: 'end',
-					onBlur: value => {
-						/// performing input validation
-						if (ensureNumber(value)) {
-							updateEnd(parseFloat(value));
-						} else {
-							alert(`${value} is not a valid number for value`);
-						}
-					},
+					onBlur: updateEnd,
 					value: props.end,
 					size: 10,
-                    type: "number",
-                    adornmentUnit: "ms",
-                    step: 1000
+					type: 'number',
+					adornmentUnit: 'ms',
+					step: 1000
 				}
 			]}
 			createLabel={'new target'}

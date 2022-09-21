@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { mapPhaseToTarget, PhaseTargets, PhaseTypes } from '../types';
-import { ensureNumber } from '../utils';
+import { ensureAll } from '../utils';
 import CrudBlock from './CrudBlock';
 
 /**
@@ -22,13 +22,19 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 	let label: PhaseTargets = mapPhaseToTarget(props.type).toLowerCase() as PhaseTargets;
 
 	// wrapper to value the type of the target
-	const updateValue = (value: number) => {
-		return props.update(value, 'value');
+	const updateValue = (value: string) => {
+		/// performing input validation
+		if (ensureAll(value, props.value)) {
+			return props.update(parseFloat(value), 'value');
+		}
 	};
 
 	// wrapper to update the time (duration/timestamp) of the phase
-	const updateTime = (time: number) => {
-		return props.update(time, label);
+	const updateTime = (time: string) => {
+		/// performing input validation
+		if (ensureAll(time, props[label])) {
+			return props.update(parseFloat(time), label);
+		}
 	};
 
 	// rendering
@@ -38,14 +44,7 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 				{
 					label: 'value',
 					value: props.value,
-					onBlur: value => {
-						/// performing input validation
-						if (ensureNumber(value)) {
-							updateValue(parseFloat(value));
-						} else {
-							alert(`${value} is not a valid number for value`);
-						}
-					},
+					onBlur: updateValue,
 					size: 10,
 					type: 'number',
 					adornmentUnit: 'unit',
@@ -54,14 +53,7 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 				{
 					label: label,
 					value: props[label] ?? 0,
-					onBlur: value => {
-						/// performing input validation
-						if (ensureNumber(value)) {
-							updateTime(parseFloat(value));
-						} else {
-							alert(`${value} is not a valid number for ${label}`);
-						}
-					},
+					onBlur: updateTime,
 					size: 10,
 					type: 'number',
 					adornmentUnit: 'ms',

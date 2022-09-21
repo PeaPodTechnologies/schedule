@@ -3,7 +3,12 @@
  * @param str the string to capitalize
  */
 export function toCapitalCase(str: string) {
-	return str[0].toUpperCase() + str.substring(1).toLowerCase();
+	return str
+		.split(' ')
+		.map(word => {
+			return word[0].toUpperCase() + word.substring(1).toLowerCase();
+		})
+		.join(' ');
 }
 
 /**
@@ -29,12 +34,56 @@ export function underscoreJoin(...args: any[]) {
 }
 
 /**
+ * this function is a shorthand to properly validate numerical input
+ * @param value some value
+ * @param comparison a value to compare it to
+ * @returns true if the value is defined, a number and is different
+ */
+export function ensureAll(value: any, comparison: any) {
+	let tests = [
+		ensureDifferent(parseFloat(value), comparison),
+		ensureDefined(value),
+		ensureNumber(value)
+	];
+	return tests.every(value => {
+		return value === true;
+	});
+}
+
+/**
+ * this function is a shorthand to testing whether the value is different than the other value
+ * @param value some value
+ * @param comparison a value to compare it to
+ * @returns true if the value is different from the comparator
+ */
+export function ensureDifferent(value: any, comparison: any): boolean {
+	if (value === comparison) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+/**
+ * this function is a shorthand to test whether or something is undefined or not
+ * @param value some value
+ * @returns true if the value is not undefined
+ */
+export function ensureDefined(value: any): boolean {
+	if (value === undefined) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+/**
  * this function takes some input and tries to parse a float from it.
- * @param input some number
+ * @param value some number
  * @returns returns true if there is a number, false otherwise
  */
-export function ensureNumber(input: any): boolean {
-	if (isNaN(parseFloat(input))) {
+export function ensureNumber(value: string): boolean {
+	if (isNaN(parseFloat(value))) {
 		return false;
 	} else {
 		return true;

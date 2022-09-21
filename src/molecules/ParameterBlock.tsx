@@ -1,6 +1,6 @@
 import { SchedulePhase } from '@peapodtech/types';
 import { FC } from 'react';
-import { ensureNumber, underscoreJoin } from '../utils';
+import { ensureDefined, ensureDifferent, ensureNumber, underscoreJoin } from '../utils';
 import PhaseBlock from './PhaseBlock';
 import { PhaseTypes } from '../types';
 import TargetBlock from './TargetBlock';
@@ -22,6 +22,14 @@ type ParameterBlockProps = {
 };
 
 const ParameterBlock: FC<ParameterBlockProps> = props => {
+	// wrapper to update the name of the parameter
+	const updateName = (name: string) => {
+		// performing input validation
+		if (ensureDefined(name) && ensureDifferent(name, props.parameter)) {
+			return props.update('name', name);
+		}
+	};
+
 	return (
 		<>
 			<tr key={props.parameter} id={props.parameter}>
@@ -30,9 +38,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 						inputs={[
 							{
 								label: 'parameter',
-								onBlur: name => {
-									props.update('name', name);
-								},
+								onBlur: updateName,
 								value: props.parameter
 							}
 						]}
