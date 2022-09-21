@@ -126,7 +126,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 			</div>
 
 			{/* the purpose of this is to add a new entry into the parameterblock array */}
-			<CreateButton
+			<CallbackButton
 				text="create a parameter"
 				callback={() => {
 					// generating a new id for each parameter until it is user defined
