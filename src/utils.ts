@@ -16,7 +16,7 @@ export function toCapitalCase(str: string): string {
  * @param input some text
  * @returns "some text" -> "some text: "
  */
-export function toLabel(input: string) {
+export function toLabel(input: string): string {
 	if (input.length === 0) return input;
 	// returning the output
 	return toCapitalCase(input);
@@ -26,7 +26,7 @@ export function toLabel(input: string) {
  * this function joins the elements in the given array with underscores
  * @param args things to join
  */
-export function underscoreJoin(...args: any[]) {
+export function underscoreJoin(...args: any[]): string {
 	return args
 		.map(arg => {
 			return arg.toString();
@@ -40,7 +40,7 @@ export function underscoreJoin(...args: any[]) {
  * @param comparison a value to compare it to
  * @returns true if the value is defined, a number and is different
  */
-export function ensureAll(value: any, comparison: any) {
+export function ensureAll(value: any, comparison: any): boolean {
 	let tests = [
 		ensureDifferent(parseFloat(value), comparison),
 		ensureDefined(value),
