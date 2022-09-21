@@ -1,6 +1,8 @@
+import { MenuItem, TextField } from '@mui/material';
 import { FC } from 'react';
 import { v4 as uuid } from 'uuid';
 import { toCapitalCase, toLabel } from '../utils';
+import './SelectBlock.css';
 
 export interface SelectBlockProps {
 	label: string;
@@ -11,9 +13,10 @@ export interface SelectBlockProps {
 
 const SelectBlock: FC<SelectBlockProps> = props => {
 	return (
-		<div>
-			<label htmlFor={props.label}>{toLabel(props.label)}</label>
-			<select
+		<div className="selectBlock">
+			<TextField
+				label={toLabel(props.label)}
+				select
 				value={props.selected}
 				onChange={event => props.onChange(event.target.value)}
 				name={props.label}
@@ -21,12 +24,12 @@ const SelectBlock: FC<SelectBlockProps> = props => {
 				{Object.entries(props.options).map(([key, value]) => {
 					return (
 						// need to choose the one that's selected
-						<option key={uuid()} value={value}>
+						<MenuItem key={uuid()} value={value}>
 							{toCapitalCase(key)}
-						</option>
+						</MenuItem>
 					);
 				})}
-			</select>
+			</TextField>
 		</div>
 	);
 };
