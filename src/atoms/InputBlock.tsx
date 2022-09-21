@@ -1,3 +1,4 @@
+import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { FC } from 'react';
 import { toLabel } from '../utils';
 import './InputBlock.css';
@@ -8,6 +9,9 @@ export interface InputBlockProps {
 	value?: any;
 	readonly?: boolean;
 	size?: number;
+	adornmentUnit?: string | 'ms';
+	type?: 'number' | 'text';
+	step?: number;
 }
 
 const ensureValue = (value: string, callback: Function) => {
@@ -18,18 +22,30 @@ const ensureValue = (value: string, callback: Function) => {
 
 const InputBlock: FC<InputBlockProps> = props => (
 	<div className="inputBlock">
-		<label htmlFor={props.label}>{toLabel(props.label)}</label>
-		<input
-			size={props.size ?? 20}
-			readOnly={props.readonly ?? false}
-			type="text"
-			name={props.label}
-			id={props.label}
-			onBlur={event => {
-				// trigger callback if there is input
-				ensureValue(event.target.value, props.onBlur);
+		<TextField
+			inputProps={{
+				size: props.size ?? 30,
+				readOnly: props.readonly ?? false,
+				name: props.label,
+				id: props.label,
+				onBlur: event => {
+					// trigger callback if there is input
+					ensureValue(event.target.value, props.onBlur);
+				},
+				defaultValue: props.value,
+				step: props.step,
+				min: 0
 			}}
-			defaultValue={props.value}
+			InputProps={
+				props.type === 'number' && props.adornmentUnit !== undefined
+					? {
+							endAdornment: <InputAdornment position="end">{props.adornmentUnit}</InputAdornment>
+					  }
+					: undefined
+			}
+			variant="outlined"
+			label={toLabel(props.label)}
+			type={props.type ?? 'text'}
 		/>
 	</div>
 );
