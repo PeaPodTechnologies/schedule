@@ -229,13 +229,13 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 				text="create a parameter"
 				callback={() => {
 					// generating a new id for each parameter until it is user defined
-					let parameterEntry = uuid();
+					let entry = uuid();
 					setSchedule(old => {
 						// getting all of the current parameters
 						let newParameters = { ...old.parameters };
 
 						// inserting the new parameter object into the global state
-						newParameters[parameterEntry] = [
+						newParameters[entry] = [
 							{
 								type: PhaseTypes.PIECEWISE,
 								end: 0,
@@ -249,9 +249,9 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 						];
 
 						// logging
-						console.log(
-							`create ${parameterEntry}: ${JSON.stringify(newParameters[parameterEntry])}`
-						);
+						console.log(`create new parameter ${entry}`);
+
+						// returning new instance
 						return { ...old, parameters: newParameters };
 					});
 				}}
