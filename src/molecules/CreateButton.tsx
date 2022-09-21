@@ -1,14 +1,22 @@
 import { FC } from 'react';
-import { toCapitalCase } from '../utils';
-import CallbackButton from '../atoms/CallbackButton';
+import AddIcon from '@mui/icons-material/Add';
+import { IconButton } from '@mui/material';
+import { toLabel } from '../utils';
 
 interface CreateButtonProps {
 	callback(): void;
-	text?: string;
+	label?: string;
 }
 
 const CreateButton: FC<CreateButtonProps> = props => (
-	<CallbackButton text={toCapitalCase(props.text ?? '+')} callback={props.callback} />
+	<IconButton
+		onClick={() => {
+			props.callback();
+		}}
+		aria-label={toLabel(props.label ?? '')}
+	>
+		<AddIcon />
+	</IconButton>
 );
 
 export default CreateButton;

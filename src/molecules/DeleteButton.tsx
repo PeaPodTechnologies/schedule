@@ -1,14 +1,22 @@
 import { FC } from 'react';
-import { toCapitalCase } from '../utils';
-import CallbackButton from '../atoms/CallbackButton';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { IconButton } from '@mui/material';
+import { toLabel } from '../utils';
 
 interface DeleteButtonProps {
 	callback(): void;
-	text?: string;
+	label?: string;
 }
 
 const DeleteButton: FC<DeleteButtonProps> = props => (
-	<CallbackButton text={toCapitalCase(props.text ?? 'x')} callback={props.callback} />
+	<IconButton
+		onClick={() => {
+			props.callback();
+		}}
+		aria-label={toLabel(props.label ?? '')}
+	>
+		<DeleteForeverIcon />
+	</IconButton>
 );
 
 export default DeleteButton;
