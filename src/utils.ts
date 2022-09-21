@@ -44,7 +44,7 @@ export function ensureAll(value: any, comparison: any): boolean {
 	let tests = [
 		ensureDifferent(parseFloat(value), comparison),
 		ensureDefined(value),
-		ensureNumber(value)
+		containsNumber(value)
 	];
 	return tests.every(value => {
 		return value === true;
@@ -78,12 +78,20 @@ export function ensureDefined(value: any): boolean {
 	}
 }
 
+export function ensureNumber(value: any): boolean {
+	if (value === undefined || typeof value !== 'number') {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 /**
  * this function takes some input and tries to parse a float from it.
  * @param value some number
  * @returns returns true if there is a number, false otherwise
  */
-export function ensureNumber(value: string): boolean {
+export function containsNumber(value: string): boolean {
 	if (isNaN(parseFloat(value))) {
 		return false;
 	} else {

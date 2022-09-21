@@ -1,6 +1,6 @@
 import { SchedulePhase } from '@peapodtech/types';
 import { FC } from 'react';
-import { ensureDefined, ensureDifferent, ensureNumber, underscoreJoin } from '../utils';
+import { ensureDefined, ensureDifferent, containsNumber, underscoreJoin } from '../utils';
 import PhaseBlock from './PhaseBlock';
 import { PhaseTypes } from '../types';
 import TargetBlock from './TargetBlock';
@@ -125,7 +125,7 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 																				value={target.value}
 																				update={(value, field) => {
 																					/// performing input validation
-																					if (ensureNumber(value)) {
+																					if (containsNumber(value)) {
 																						props.update(
 																							parseFloat(value),
 																							phaseIndex,
