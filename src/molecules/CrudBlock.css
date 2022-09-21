@@ -7,8 +7,3 @@
 	align-content: center;
 	width: max-content;
 }
-
-.crudBlock > div {
-	display: block;
-	position: relative;
-}

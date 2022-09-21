@@ -6,12 +6,13 @@ import DeleteButton from './DeleteButton';
 import SelectBlock, { SelectBlockProps } from '../atoms/SelectBlock';
 import { underscoreJoin } from '../utils';
 import { v4 as uuid4 } from 'uuid';
+import { Stack } from '@mui/material';
 
 interface CrudBlockProps {
 	inputs?: InputBlockProps[];
 	selects?: SelectBlockProps[];
 	createLabel?: string;
-    deleteLabel?: string;
+	deleteLabel?: string;
 	// generic create function
 	create?(...keys: any[]): void;
 	// generic delete function
@@ -21,7 +22,7 @@ interface CrudBlockProps {
 const CrudBlock: FC<CrudBlockProps> = props => {
 	return (
 		<div className="crudBlock" key={uuid4()}>
-			<div>
+			<Stack direction="column">
 				{
 					// creating a SelectBlock component if there is data for it
 					props.selects === undefined ? (
@@ -42,6 +43,8 @@ const CrudBlock: FC<CrudBlockProps> = props => {
 						})
 					)
 				}
+			</Stack>
+			<Stack direction="column">
 				{
 					// creating a CreateButton component if there is data for it
 					props.create === undefined ? (
@@ -50,10 +53,8 @@ const CrudBlock: FC<CrudBlockProps> = props => {
 						<CreateButton callback={props.create} label={props.createLabel} />
 					)
 				}
-			</div>
-			<div>
 				<DeleteButton callback={props.delete} />
-			</div>
+			</Stack>
 		</div>
 	);
 };
