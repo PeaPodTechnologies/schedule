@@ -2,7 +2,7 @@
  * this function capitalizes the first letter in the string
  * @param str the string to capitalize
  */
-export function toCapitalCase(str: string) {
+export function toCapitalCase(str: string): string {
 	return str
 		.split(' ')
 		.map(word => {
