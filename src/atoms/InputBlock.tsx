@@ -5,7 +5,7 @@ import './InputBlock.css';
 
 export interface InputBlockProps {
 	label: string;
-	onBlur(value: any): void;
+	onBlur?(value: any): void;
 	value?: any;
 	readonly?: boolean;
 	size?: number;
@@ -29,8 +29,12 @@ const InputBlock: FC<InputBlockProps> = props => (
 				name: props.label,
 				id: props.label,
 				onBlur: event => {
-					// trigger callback if there is input
-					ensureValue(event.target.value, props.onBlur);
+                    if (props.onBlur !== undefined) {
+                        // trigger callback if there is input
+                        ensureValue(event.target.value, props.onBlur);
+                    } else {
+                        return
+                    }
 				},
 				defaultValue: props.value,
 				step: props.step,
