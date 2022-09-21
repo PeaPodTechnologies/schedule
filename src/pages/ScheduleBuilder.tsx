@@ -5,10 +5,114 @@ import ParameterBlock from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
 import { mapPhaseToTarget, PhaseTypes } from '../types';
 import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
-import CreateButton from '../molecules/CreateButton';
 import CallbackButton from '../atoms/CallbackButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import { ensureNumber } from '../utils';
 
+/**
+ * the props for the schedulebuilder
+ */
 type ScheduleBuilderProps = {};
+
+/**
+ * these are the props for the download schedule button
+ */
+type DownloadScheduleProps = {
+	state: string | boolean;
+	callback(): void;
+};
+
+/**
+ * this function validates an environment schedule
+ * @param schedule the environment schedule to validate
+ * @returns true if valid, string with error message otherwise
+ */
+const validateSchedule = (schedule: EnvironmentSchedule): boolean | string => {
+	/// validating the top level of the schedule
+
+	// checking the id
+	if (schedule.id === undefined || typeof schedule.id !== 'string') {
+		return 'the schedule is missing an id';
+	}
+	// checking the name
+	if (schedule.name === undefined || typeof schedule.name !== 'string') {
+		return 'the schedule is missing a name';
+	}
+	// checking the revision
+	if (!ensureNumber(schedule.revision)) {
+		return 'the schedule is missing a revision number';
+	}
+
+	/// validating the parameters
+	if (Object.keys(schedule.parameters).length === 0) {
+		return 'the schedule is missing parameters';
+	} else {
+		Object.keys(schedule.parameters).forEach(parameter => {
+			// making a reference to the current object
+			let context = schedule.parameters[parameter];
+
+			/// validating each parameter
+			if (context.length === 0) {
+				return `parameter ${parameter} is missing a phase`;
+			} else {
+				/// validating each phase
+				context.forEach((phase, phaseIndex) => {
+					// checking the end
+					if (!ensureNumber(phase.end) || phase.end < 0) {
+						return `the 'end' of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+					}
+					// checking the type
+					if (phase.type === undefined || !Object.keys(PhaseTypes).includes(phase.type)) {
+						return `the 'type' of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+					}
+					// checking the targets
+					if (phase.targets.length === 0) {
+						return `phase ${phaseIndex} of parameter ${parameter} is missing targets`;
+					} else {
+						(
+							phase.targets as {
+								value: number;
+								timestamp?: number;
+								duration?: number;
+							}[]
+						).forEach((target, targetIndex) => {
+							// checking the value
+							if (!ensureNumber(target.value) || target.value < 0) {
+								return `the 'value' target ${targetIndex} of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+							}
+							// checking the duration/timestamp
+							if (target.duration === undefined && target.timestamp === undefined) {
+								return `target ${targetIndex} of phase ${phaseIndex} of parameter ${parameter} must have a timestamp or a duration`;
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	return true;
+};
+
+/**
+ * this component generates a callback button based off of the result of `validateSchedule()`
+ * this sadly cannot be inlined due to the conditional props
+ * @param props the props to pass in
+ * @returns a button with conditional props
+ */
+const DownloadSchedule: FC<DownloadScheduleProps> = props => {
+	let conditionalProps: any = {};
+
+	if (typeof props.state === 'string') {
+		conditionalProps.text = props.state;
+		conditionalProps.disabled = true;
+	} else {
+		conditionalProps.text = 'download schedule';
+		conditionalProps.endIcon = <DownloadIcon />;
+	}
+
+	return <CallbackButton callback={props.callback} {...conditionalProps} />;
+};
 
 /**
  * this object's purpose is to contain/manage it's parameter blocks. those parameter blocks will modify a parameter
@@ -116,12 +220,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 					></InputBlock>
 
 					{/* NO input, uses latest */}
-					<InputBlock
-						readonly={true}
-						value={schedule.revision}
-						label="revision"
-						onBlur={() => null}
-					></InputBlock>
+					<InputBlock readonly={true} value={schedule.revision} label="revision"></InputBlock>
 				</div>
 			</div>
 
@@ -158,12 +257,12 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 				}}
 			/>
 
-			<CallbackButton text="Download the schedule" callback={downloadSchedule} />
+			<DownloadSchedule state={validateSchedule(schedule)} callback={downloadSchedule} />
 
 			<CallbackButton
-				text="View Params"
+				text="view schedule"
 				callback={() => {
-					console.log(schedule.parameters);
+					console.log(schedule);
 				}}
 			/>
 
