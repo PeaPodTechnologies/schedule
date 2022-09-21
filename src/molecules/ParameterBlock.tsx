@@ -42,7 +42,8 @@ const ParameterBlock: FC<ParameterBlockProps> = props => {
 								value: props.parameter
 							}
 						]}
-						createLabel="new phase"
+						createLabel="create a new phase"
+						deleteLabel="delete this parameter"
 						create={() => {
 							props.create({
 								type: PhaseTypes.PIECEWISE,

@@ -61,7 +61,8 @@ const PhaseBlock: FC<PhaseBlockProps> = props => {
 					step: 1000
 				}
 			]}
-			createLabel={'new target'}
+			createLabel="new target"
+			deleteLabel="delete this phase"
 			create={() => {
 				props.create(
 					{

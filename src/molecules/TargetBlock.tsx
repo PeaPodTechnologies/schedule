@@ -61,6 +61,7 @@ const TargetBlock: FC<TargetBlockProps> = props => {
 				}
 			]}
 			delete={props.delete}
+			deleteLabel="delete this target"
 		/>
 	);
 };

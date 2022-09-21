@@ -11,6 +11,7 @@ interface CrudBlockProps {
 	inputs?: InputBlockProps[];
 	selects?: SelectBlockProps[];
 	createLabel?: string;
+    deleteLabel?: string;
 	// generic create function
 	create?(...keys: any[]): void;
 	// generic delete function
@@ -46,7 +47,7 @@ const CrudBlock: FC<CrudBlockProps> = props => {
 					props.create === undefined ? (
 						<></>
 					) : (
-						<CreateButton callback={props.create} text={props.createLabel} />
+						<CreateButton callback={props.create} label={props.createLabel} />
 					)
 				}
 			</div>
