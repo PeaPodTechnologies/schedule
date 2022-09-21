@@ -6,10 +6,6 @@
 	margin: 0.5rem;
 }
 
-.inputBlock > label {
-	margin-right: 0.4rem;
-}
-
 .inputBlock > input {
 	width: 100%;
 }
