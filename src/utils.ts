@@ -17,6 +17,7 @@ export function toCapitalCase(str: string): string {
  * @returns "some text" -> "some text: "
  */
 export function toLabel(input: string) {
+	if (input.length === 0) return input;
 	// returning the output
 	return toCapitalCase(input);
 }
