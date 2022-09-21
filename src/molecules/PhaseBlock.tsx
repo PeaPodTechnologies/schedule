@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ensureAll, ensureDefined, ensureDifferent, ensureNumber } from '../utils';
+import { ensureAll, ensureDefined, ensureDifferent } from '../utils';
 import { PhaseTypes } from '../types';
 import CrudBlock from './CrudBlock';
 
