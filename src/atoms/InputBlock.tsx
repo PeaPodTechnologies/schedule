@@ -1,4 +1,4 @@
-import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 import { FC } from 'react';
 import { toLabel } from '../utils';
 import './InputBlock.css';
