@@ -1,0 +1,15 @@
+.inputBlock {
+	display: flex;
+	flex: content;
+	position: relative;
+	height: auto;
+	margin: 0.5rem;
+}
+
+.inputBlock > input {
+	width: 100%;
+}
+
+.inputBlock > label|input {
+	flex-direction: row;
+}

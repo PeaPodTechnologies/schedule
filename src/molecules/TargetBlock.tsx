@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import DeleteButton from './DeleteButton';
-import InputBlock from '../atoms/InputBlock';
-import { mapPhaseToTarget, PhaseTargets, PhaseTypes } from '../atoms/types';
-import { ensureNumber } from '../utils';
+import { mapPhaseToTarget, PhaseTargets, PhaseTypes } from '../types';
+import { ensureAll } from '../utils';
+import CrudBlock from './CrudBlock';
 
 /**
  * these are the expected props that can be passed into the object
@@ -20,47 +19,50 @@ interface TargetBlockProps {
 
 const TargetBlock: FC<TargetBlockProps> = props => {
 	// setting the proper label based on type
-	let label: PhaseTargets = mapPhaseToTarget(props.type);
+	let label: PhaseTargets = mapPhaseToTarget(props.type).toLowerCase() as PhaseTargets;
 
 	// wrapper to value the type of the target
-	const updateValue = (value: number) => {
-		return props.update(value, 'value');
+	const updateValue = (value: string) => {
+		/// performing input validation
+		if (ensureAll(value, props.value)) {
+			return props.update(parseFloat(value), 'value');
+		}
 	};
 
 	// wrapper to update the time (duration/timestamp) of the phase
-	const updateTime = (time: number) => {
-		return props.update(time, label);
+	const updateTime = (time: string) => {
+		/// performing input validation
+		if (ensureAll(time, props[label])) {
+			return props.update(parseFloat(time), label);
+		}
 	};
 
 	// rendering
 	return (
-		<div>
-			<InputBlock
-				label="value"
-				value={props.value}
-				onBlur={value => {
-					/// performing input validation
-					if (ensureNumber(value)) {
-						updateValue(parseFloat(value));
-					} else {
-						alert(`${value} is not a valid number for value`);
-					}
-				}}
-			/>
-			<InputBlock
-				label={label}
-				value={props[label] ?? ''}
-				onBlur={value => {
-					/// performing input validation
-					if (ensureNumber(value)) {
-						updateTime(parseFloat(value));
-					} else {
-						alert(`${value} is not a valid number for ${label}`);
-					}
-				}}
-			/>
-			<DeleteButton callback={props.delete} text="delete this target" />
-		</div>
+		<CrudBlock
+			inputs={[
+				{
+					label: 'value',
+					value: props.value,
+					onBlur: updateValue,
+					size: 10,
+					type: 'number',
+					adornmentUnit: 'unit',
+					step: 0.1
+				},
+				{
+					label: label,
+					value: props[label] ?? 0,
+					onBlur: updateTime,
+					size: 10,
+					type: 'number',
+					adornmentUnit: 'ms',
+					step: 1000
+				}
+			]}
+			delete={props.delete}
+			deleteLabel="delete this target"
+		/>
 	);
 };
 

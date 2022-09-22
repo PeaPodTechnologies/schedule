@@ -3,12 +3,116 @@ import './ScheduleBuilder.css';
 import InputBlock from '../atoms/InputBlock';
 import ParameterBlock from '../molecules/ParameterBlock';
 import { v4 as uuid } from 'uuid';
-import { PhaseTypes } from '../atoms/types';
+import { mapPhaseToTarget, PhaseTypes } from '../types';
 import { PEAPODAPI_REVISION, EnvironmentSchedule, SchedulePhase } from '@peapodtech/types';
-import CreateButton from '../molecules/CreateButton';
 import CallbackButton from '../atoms/CallbackButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import { ensureNumber } from '../utils';
 
+/**
+ * the props for the schedulebuilder
+ */
 type ScheduleBuilderProps = {};
+
+/**
+ * these are the props for the download schedule button
+ */
+type DownloadScheduleProps = {
+	state: string | boolean;
+	callback(): void;
+};
+
+/**
+ * this function validates an environment schedule
+ * @param schedule the environment schedule to validate
+ * @returns true if valid, string with error message otherwise
+ */
+const validateSchedule = (schedule: EnvironmentSchedule): boolean | string => {
+	/// validating the top level of the schedule
+
+	// checking the id
+	if (schedule.id === undefined || typeof schedule.id !== 'string') {
+		return 'the schedule is missing an id';
+	}
+	// checking the name
+	if (schedule.name === undefined || typeof schedule.name !== 'string') {
+		return 'the schedule is missing a name';
+	}
+	// checking the revision
+	if (!ensureNumber(schedule.revision)) {
+		return 'the schedule is missing a revision number';
+	}
+
+	/// validating the parameters
+	if (Object.keys(schedule.parameters).length === 0) {
+		return 'the schedule is missing parameters';
+	} else {
+		Object.keys(schedule.parameters).forEach(parameter => {
+			// making a reference to the current object
+			let context = schedule.parameters[parameter];
+
+			/// validating each parameter
+			if (context.length === 0) {
+				return `parameter ${parameter} is missing a phase`;
+			} else {
+				/// validating each phase
+				context.forEach((phase, phaseIndex) => {
+					// checking the end
+					if (!ensureNumber(phase.end) || phase.end < 0) {
+						return `the 'end' of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+					}
+					// checking the type
+					if (phase.type === undefined || !Object.keys(PhaseTypes).includes(phase.type)) {
+						return `the 'type' of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+					}
+					// checking the targets
+					if (phase.targets.length === 0) {
+						return `phase ${phaseIndex} of parameter ${parameter} is missing targets`;
+					} else {
+						(
+							phase.targets as {
+								value: number;
+								timestamp?: number;
+								duration?: number;
+							}[]
+						).forEach((target, targetIndex) => {
+							// checking the value
+							if (!ensureNumber(target.value) || target.value < 0) {
+								return `the 'value' target ${targetIndex} of phase ${phaseIndex} of parameter ${parameter} is invalid`;
+							}
+							// checking the duration/timestamp
+							if (target.duration === undefined && target.timestamp === undefined) {
+								return `target ${targetIndex} of phase ${phaseIndex} of parameter ${parameter} must have a timestamp or a duration`;
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
+	return true;
+};
+
+/**
+ * this component generates a callback button based off of the result of `validateSchedule()`
+ * this sadly cannot be inlined due to the conditional props
+ * @param props the props to pass in
+ * @returns a button with conditional props
+ */
+const DownloadSchedule: FC<DownloadScheduleProps> = props => {
+	let conditionalProps: any = {};
+
+	if (typeof props.state === 'string') {
+		conditionalProps.text = props.state;
+		conditionalProps.disabled = true;
+	} else {
+		conditionalProps.text = 'download schedule';
+		conditionalProps.endIcon = <DownloadIcon />;
+	}
+
+	return <CallbackButton callback={props.callback} {...conditionalProps} />;
+};
 
 /**
  * this object's purpose is to contain/manage it's parameter blocks. those parameter blocks will modify a parameter
@@ -25,10 +129,41 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 		parameters: {}
 	});
 
-	// WIP: converting the parameterblocks into a proper EnvironmentSchedule, ignore
+	// function turns the schedule into a JSON string which can be downloaded
 	const downloadSchedule = () => {
+		/// removing the keys from each target which aren't necessary
+
+		// creating new object
+		let downloadable = { ...schedule };
+
+		// removing excess keys
+		Object.keys(downloadable.parameters).forEach(parameter => {
+			// getting the parameter context
+			let context = downloadable.parameters[parameter];
+
+			// getting the targets of the context
+			if (context.length > 0) {
+				context.forEach((phase, phaseIndex) => {
+					let type = phase.type;
+					if (phase.targets.length > 0) {
+						phase.targets.forEach((target, targetIndex) => {
+							Object.keys(target).forEach(key => {
+								if (key === 'value') return;
+								if (mapPhaseToTarget(type) !== key) {
+									console.log(
+										`delete ${parameter}[${phaseIndex}][targets][${targetIndex}][${key}]`
+									);
+									delete (context[phaseIndex].targets as any)[targetIndex][key];
+								}
+							});
+						});
+					}
+				});
+			}
+		});
+
 		// BLOB-ify
-		const blob = new Blob([JSON.stringify(schedule, null, 2)], { type: 'application/json' });
+		const blob = new Blob([JSON.stringify(downloadable, null, 2)], { type: 'application/json' });
 
 		// Give it a URL
 		const href = URL.createObjectURL(blob);
@@ -36,7 +171,7 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 		// Create a download button, click it, remove it, and clean up
 		const a = document.createElement('a');
 		a.href = href;
-		a.download = `${schedule.id}.json`;
+		a.download = `${downloadable.id}.json`;
 		document.body.appendChild(a);
 
 		a.click();
@@ -48,55 +183,59 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 	// render function
 	return (
 		<div className="ScheduleBuilder">
-			{/* NO input for ID, autogenerated */}
-			<InputBlock
-				value={schedule.id}
-				label="id"
-				onBlur={newId => {
-					setSchedule(old => {
-						let newSchedule = { ...old };
+			<div className="container">
+				<div>
+					{/* NO input for ID, autogenerated */}
+					<InputBlock
+						value={schedule.id}
+						label="id"
+						onBlur={newId => {
+							setSchedule(old => {
+								let newSchedule = { ...old };
 
-						// updating the id of the schedule
-						newSchedule.id = newId;
+								// updating the id of the schedule
+								newSchedule.id = newId;
 
-						// returning the new state
-						return newSchedule;
-					});
-				}}
-			></InputBlock>
+								// returning the new state
+								return newSchedule;
+							});
+						}}
+						readonly={true}
+					></InputBlock>
 
-			{/* add prop `onUpdate(name: string) => void` that sets schedule.name */}
-			<InputBlock
-				value={schedule.name ?? ''}
-				label="name"
-				onBlur={newName => {
-					setSchedule(old => {
-						let newSchedule = { ...old };
+					<InputBlock
+						value={schedule.name ?? ''}
+						label="name"
+						onBlur={newName => {
+							setSchedule(old => {
+								let newSchedule = { ...old };
 
-						// updating the name of the schedule
-						newSchedule.name = newName;
+								// updating the name of the schedule
+								newSchedule.name = newName;
 
-						// returning the new state
-						return newSchedule;
-					});
-				}}
-			></InputBlock>
+								// returning the new state
+								return newSchedule;
+							});
+						}}
+					></InputBlock>
 
-			{/* NO input, uses latest */}
-			<InputBlock readonly={true} label="revision" onBlur={() => null}></InputBlock>
+					{/* NO input, uses latest */}
+					<InputBlock readonly={true} value={schedule.revision} label="revision"></InputBlock>
+				</div>
+			</div>
 
 			{/* the purpose of this is to add a new entry into the parameterblock array */}
-			<CreateButton
+			<CallbackButton
 				text="create a parameter"
 				callback={() => {
 					// generating a new id for each parameter until it is user defined
-					let parameterEntry = uuid();
+					let entry = uuid();
 					setSchedule(old => {
 						// getting all of the current parameters
 						let newParameters = { ...old.parameters };
 
 						// inserting the new parameter object into the global state
-						newParameters[parameterEntry] = [
+						newParameters[entry] = [
 							{
 								type: PhaseTypes.PIECEWISE,
 								end: 0,
@@ -110,40 +249,29 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 						];
 
 						// logging
-						console.log(
-							`create ${parameterEntry}: ${JSON.stringify(newParameters[parameterEntry])}`
-						);
+						console.log(`create new parameter ${entry}`);
+
+						// returning new instance
 						return { ...old, parameters: newParameters };
 					});
 				}}
 			/>
 
-			<CallbackButton text="Download the schedule" callback={downloadSchedule} />
+			<DownloadSchedule state={validateSchedule(schedule)} callback={downloadSchedule} />
 
-			<div>
-				<button
-					onClick={() => {
-						console.log(schedule.parameters);
-					}}
-				>
-					View Params
-				</button>
-				{/* <button
-					onClick={() => {
-						// showing verbose output of the program if toggled
-						debug = !(debug ?? false);
-					}}
-				>
-					{debug ?? false ? 'Enable Debug' : 'Disable Debug'}
-				</button> */}
-			</div>
+			<CallbackButton
+				text="view schedule"
+				callback={() => {
+					console.log(schedule);
+				}}
+			/>
 
 			<table>
-				<thead></thead>
 				<tbody>
 					{Object.entries(schedule.parameters).map(([parameter, phases]) => (
 						// creating visual representations of each parameter
 						<ParameterBlock
+							key={parameter}
 							parameter={parameter}
 							phases={phases}
 							update={(payload, ...keys) => {
@@ -275,11 +403,8 @@ const ScheduleBuilder: FC<ScheduleBuilderProps> = _ => {
 					))}
 				</tbody>
 			</table>
-			{/* DOWNLOAD BUTTON: Create a component with an `onClick: (void)=>void` callback parameter set to {downloadSchedule} */}
 		</div>
 	);
-
-	// need an export to json function this function will look through its children and create a schedule.json from them
 };
 
 export default ScheduleBuilder;

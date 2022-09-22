@@ -19,20 +19,20 @@ export enum PhaseTargets {
  * mapping function declarations
  */
 
-export function mapPhaseToTarget(type: PhaseTypes): PhaseTargets {
+export function mapPhaseToTarget(type: 'piecewise' | 'periodic'): PhaseTargets {
 	switch (type) {
-		case PhaseTypes.PIECEWISE || 'piecewise':
+		case 'piecewise':
 			return PhaseTargets.TIMESTAMP;
-		case PhaseTypes.PERIODIC || 'periodic':
+		case 'periodic':
 			return PhaseTargets.DURATION;
 	}
 }
 
-export function mapTargetToPhase(type: PhaseTargets): PhaseTypes {
+export function mapTargetToPhase(type: 'timestamp' | 'duration'): PhaseTypes {
 	switch (type) {
-		case PhaseTargets.TIMESTAMP || 'timestamp':
+		case 'timestamp':
 			return PhaseTypes.PIECEWISE;
-		case PhaseTargets.DURATION || 'duration':
+		case 'duration':
 			return PhaseTypes.PERIODIC;
 	}
 }

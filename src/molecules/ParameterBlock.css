@@ -1,0 +1,7 @@
+td {
+	vertical-align: text-top;
+}
+
+ol > li {
+    margin-bottom: 0.6rem;
+}
